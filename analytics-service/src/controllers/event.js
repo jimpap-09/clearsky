@@ -1,15 +1,20 @@
 // controllers/eventController.js
-const { Grades } = require('../models/Grades');
-const { QuestionDistribution } = require('../models/QuestionDistribution');
-const { totalGradeDistribution} = require('../models/TotalGradeDistribution');
+const Grades = require('../models/Grades');
+const QuestionDistribution = require('../models/QuestionDistribution');
+const TotalGradeDistribution = require('../models/TotalGradesDistribution');
 
 exports.handleEvent = async (req, res) => {
   const { type, data } = req.body;
-
+  
+  console.log('Received event');
   if (type === 'GRADES_ANALYTICS') {
     try {
-      const courseId = data[0][4]; // Column E
-      const parsedGrades = data.map(row => ({
+      const courseId = data[1][4]; // Column E
+      const questionHeaders = data[0].slice(8, 18); // Extract headers (Q01, Q02, ...) from row 1 (Column I onward)
+      const scale = data[1][5]; // Column F
+      const maxGrade = parseInt(scale.split('-')[1]); // → 10
+
+      const parsedGrades = data.slice(1).map(row => ({
         studentId: row[0], // Column A
         courseId: row[4],  // Column E
         totalGrade: row[6], // Column G
@@ -20,35 +25,6 @@ exports.handleEvent = async (req, res) => {
       }));
       
 
-      // Extract relevant columns (A-G)
-      /* const gradeRows = dataRows.map(row => row.slice(0, 7)); // A-G (Student ID, Name, Email, Period, Course Name, Scale, Grade)
-      for (const row of gradeRows) {
-
-          //TODO: Handle validation
-          if (row.length < 7) continue; // Skip incomplete rows
-
-          const [
-              studentId,
-              name,
-              email,
-              period,
-              courseName,
-              scale,
-              grade
-          ] = row;
-
-          // Skip if any important field is missing
-          if (!studentId || !grade) continue;
-
-          gradesToSend.push({
-              studentId,
-              name,
-              email,
-              grade: parseFloat(grade),
-              courseId
-          });
-      }
-     */
       // Save grades to DB
       for (const grade of parsedGrades) {
         await Grades.create({
@@ -62,13 +38,24 @@ exports.handleEvent = async (req, res) => {
       const questionDistributions = {};  // { Q01: { 1: count, 2: count, ... } }
       const totalGradeDistribution = {}; // { 1: count, 2: count, ... }
 
+      // Initialize distributions
+      for(let grade = 0; grade <= maxGrade; grade++) {
+        totalGradeDistribution[grade] = 0;
+      }
+      questionHeaders.forEach(question => {
+        questionDistributions[question] = {};
+        for (let grade = 0; grade <= maxGrade; grade++) {
+          questionDistributions[question][grade] = 0;
+        }
+      });
+
       for (const row of parsedGrades) {
         const total = row.totalGrade;
-        totalGradeDistribution[total] = (totalGradeDistribution[total] || 0) + 1;
+        totalGradeDistribution[total] += 1;
 
         for (const [question, grade] of Object.entries(row.perQuestion)) {
           if (!questionDistributions[question]) questionDistributions[question] = {};
-          questionDistributions[question][grade] = (questionDistributions[question][grade] || 0) + 1;
+          questionDistributions[question][grade] += 1;
         }
       }
 
@@ -95,6 +82,8 @@ exports.handleEvent = async (req, res) => {
         totalGrade: parseInt(grade),
         count: totalGradeDistribution[grade]
       });
+      
+      await TotalGradeDistribution.bulkCreate(totalGradeEntries);
 }
       // For now, just log them or return
       console.log('📊 Final Grade Distribution:', totalGradeDistribution);

@@ -6,6 +6,7 @@ const sequelize = require('./config/db');
 
 app.use(express.json());
 app.use('/api/analytics', analyticsRoutes);
+app.use('/', analyticsRoutes);
 
 const PORT = process.env.PORT;
 

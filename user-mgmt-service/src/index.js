@@ -7,7 +7,7 @@ const sequelize = require('./config/db');
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 sequelize.sync({ alter: true }) // or force: true during dev
   .then(() => {
