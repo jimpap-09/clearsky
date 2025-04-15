@@ -6,6 +6,14 @@ const TotalGradeDistribution = sequelize.define('TotalGradeDistribution', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  examPeriod: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  courseName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   totalGrade: {
     type: DataTypes.INTEGER, // e.g., 0 through 10
     allowNull: false,

@@ -1,11 +1,11 @@
 // controllers/gradeReviewController.js
-const GradeReviewRequest = require('../models/GradeReviewRequest');
+const ReviewRequest = require('../models/reviewRequest');
 
 exports.createReviewRequest = async (req, res) => {
   const { courseId, studentId, studentMessage } = req.body;
 
   try {
-    const review = await GradeReviewRequest.create({
+    const review = await ReviewRequest.create({
       courseId,
       studentId,
       studentMessage
@@ -27,7 +27,7 @@ exports.respondToReviewRequest = async (req, res) => {
     }
   
     try {
-      const request = await GradeReviewRequest.findOne({
+      const request = await ReviewRequest.findOne({
         where: { courseId, studentId }
       });
   
@@ -40,21 +40,40 @@ exports.respondToReviewRequest = async (req, res) => {
       await request.save();
   
       res.status(200).json(request);
-    } catch (err) {
-      console.error('Reply error:', err.message);
-      res.status(500).json({ error: 'Failed to update review request' });
-    }
-  };
+  } catch (err) {
+    console.error('Reply error:', err.message);
+    res.status(500).json({ error: 'Failed to update review request' });
+  }
+};
   
-  exports.getAllReviewRequests = async (req, res) => {
-    try {
-      const requests = await GradeReviewRequest.findAll({
-        order: [['createdAt', 'DESC']]
-      });
+exports.getAllReviewRequests = async (req, res) => {
+  try {
+    const requests = await ReviewRequest.findAll({
+      order: [['createdAt', 'DESC']]
+    });
   
-      res.status(200).json(requests);
-    } catch (err) {
-      console.error('Fetch all review requests error:', err.message);
-      res.status(500).json({ error: 'Failed to retrieve review requests' });
+    res.status(200).json(requests);
+  } catch (err) {
+    console.error('Fetch all review requests error:', err.message);
+    res.status(500).json({ error: 'Failed to retrieve review requests' });
+  }
+};
+
+exports.getStudentReviewRequest = async (req, res) => {
+  const { courseId, studentId } = req.params;
+
+  try {
+    const request = await ReviewRequest.findOne({
+      where: { courseId, studentId }
+    });
+
+    if (!request) {
+      return res.status(404).json({ error: 'Review request not found' });
     }
-  };
+
+    res.status(200).json(request);
+  } catch (err) {
+    console.error('Fetch student review request error:', err.message);
+    res.status(500).json({ error: 'Failed to retrieve review request' });
+  }
+}

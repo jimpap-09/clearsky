@@ -3,18 +3,6 @@ const Event = require('../models/Event');
 
 // Define dispatch logic per event type
 const EVENT_DISPATCH_MAP = {
-    POST_GRADES: [
-        {
-            name: 'Analytics Service',
-            url: 'http://localhost:4002/events', // Replace with real URL
-        }
-    ],
-    GRADES_ANALYTICS: [
-        {
-            name: 'Analytics Service',
-            url: 'http://localhost:4002/events', // Replace with real URL
-        }
-    ],
     INITIAL_GRADES: [
         {
             name: 'Analytics Service',

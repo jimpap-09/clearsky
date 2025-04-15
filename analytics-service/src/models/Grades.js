@@ -10,6 +10,14 @@ const Grades = sequelize.define('StudentGrade', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    examPeriod: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    courseName: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     totalGrade: {
         type: DataTypes.INTEGER,
         allowNull: false

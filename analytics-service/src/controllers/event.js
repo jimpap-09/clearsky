@@ -3,12 +3,25 @@ const Grades = require('../models/Grades');
 const QuestionDistribution = require('../models/QuestionDistribution');
 const TotalGradeDistribution = require('../models/TotalGradesDistribution');
 
+function parseCourseMetadata(headerText) {
+  const regex = /ΒΑΘΜΟΛΟΓΙΟ\s+(.*?)\s+\((\d+)\)\s+(.+)/;
+  const match = headerText.match(regex);
+  if (!match) return null;
+
+  return {
+      courseName: match[1].trim(),
+      courseId: match[2].trim(),
+      examPeriod: match[3].trim()
+  };
+}
+
 exports.handleEvent = async (req, res) => {
   const { type, data } = req.body;
   
   console.log('Received event');
   try {
-    const courseId = data[1][4]; // Column E
+    const headerText = data[0][0]; // First cell of the first row
+    const parsed = parseCourseMetadata(headerText);
     const questionHeaders = data[0].slice(8, 18); // Extract headers (Q01, Q02, ...) from row 1 (Column I onward)
     const scale = data[1][5]; // Column F
     const maxGrade = parseInt(scale.split('-')[1]); // → 10
@@ -16,7 +29,9 @@ exports.handleEvent = async (req, res) => {
 
     const parsedGrades = data.slice(1).map(row => ({
       studentId: row[0], // Column A
-      courseId: row[4],  // Column E
+      courseId: parsed.courseId,  // Column E
+      examPeriod: parsed.examPeriod, // Column F
+      courseName: parsed.courseName, // Column B
       totalGrade: row[6], // Column G
       perQuestion: questionHeaders.reduce((acc, q, idx) => {
         acc[q] = row[8 + idx]; // Columns I-R
@@ -29,16 +44,13 @@ exports.handleEvent = async (req, res) => {
       await QuestionDistribution.destroy({ where: { courseId } });
       await TotalGradeDistribution.destroy({ where: { courseId } });
     }
-    // Save grades to DB
-    if (gradingType === 'final') {
-        await Grades.destroy({ where: { courseId } });
-        await QuestionDistribution.destroy({ where: { courseId } });
-        await TotalGradeDistribution.destroy({ where: { courseId } });
-    }
+    
     for (const grade of parsedGrades) {
       await Grades.create({
         studentId: grade.studentId,
         courseId: grade.courseId,
+        examPeriod: grade.examPeriod,
+        courseName: grade.courseName,
         totalGrade: grade.totalGrade,
         perQuestion: grade.perQuestion,
         isFinalized: isFinalized
@@ -64,23 +76,22 @@ exports.handleEvent = async (req, res) => {
       totalGradeDistribution[total] += 1;
 
       for (const [question, grade] of Object.entries(row.perQuestion)) {
-        if (!questionDistributions[question]) questionDistributions[question] = {};
         questionDistributions[question][grade] += 1;
       }
     }
 
-    for (const question in questionDistributions) {
+    for (const questionNo in questionDistributions) {
       const entries = [];
-      for (const questionNo in questionDistributions[courseId]) {
-        const grades = questionDistributions[questionNo];
-        for (const grade in grades) {
-          entries.push({
-            courseId,
-            questionNo,
-            grade: parseInt(grade),
-            count: grades[grade]
-          });
-        }
+      const grades = questionDistributions[questionNo];
+      for (const grade in grades) {
+        entries.push({
+          courseId: parsed.courseId,
+          questionNo,
+          examPeriod: parsed.examPeriod,
+          courseName: parsed.courseName,
+          grade: parseInt(grade),
+          count: grades[grade]
+        });
       }
       await QuestionDistribution.bulkCreate(entries);
     }
@@ -88,7 +99,9 @@ exports.handleEvent = async (req, res) => {
     const totalGradeEntries = [];
     for (const grade in totalGradeDistribution) {
       totalGradeEntries.push({
-        courseId,
+        courseId: parsed.courseId,
+        examPeriod: parsed.examPeriod,
+        courseName: parsed.courseName,
         totalGrade: parseInt(grade),
         count: totalGradeDistribution[grade]
       });

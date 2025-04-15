@@ -6,6 +6,14 @@ const QuestionDistribution = sequelize.define('QuestionDistribution', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  examPeriod: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  courseName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   questionNo: {
     type: DataTypes.STRING, // e.g., "Q01"
     allowNull: false,

@@ -1,12 +1,16 @@
 const express = require('express');
-const gradeController = require('../controllers/postGrades');
+const uploadController = require('../controllers/uploadGrades');
+const validationController = require('../controllers/validateAndSend');
 
 const router = express.Router();
 
 // POST initial grade
-router.post('/initialGrades', gradeController.postInitial);
+router.post('/uploadInitialGrades', uploadController.uploadInitial);
 
 // POST final grade
-router.post('/finalGrades', gradeController.postFinal);
+router.post('/uploadFinalGrades', uploadController.uploadFinal);
 
+// Validate metadata and send
+
+router.post('/validateAndPost', validationController.validateAndSend);
 module.exports = router;
