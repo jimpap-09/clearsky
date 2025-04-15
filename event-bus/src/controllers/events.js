@@ -14,7 +14,19 @@ const EVENT_DISPATCH_MAP = {
             name: 'Analytics Service',
             url: 'http://localhost:4002/events', // Replace with real URL
         }
-    ]
+    ],
+    INITIAL_GRADES: [
+        {
+            name: 'Analytics Service',
+            url: 'http://localhost:4002/events', // Replace with real URL
+        }
+    ],
+    FINAL_GRADES: [
+        {
+            name: 'Analytics Service',
+            url: 'http://localhost:4002/events', // Replace with real URL
+        }
+    ],
   // You can add more types here in future:
   // 'USER_REGISTERED': [{ name: 'Notification Service', url: 'http://...' }],
   // 'COURSE_CREATED': [{ name: 'Search Service', url: 'http://...' }]

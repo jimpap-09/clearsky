@@ -4,9 +4,9 @@ const gradeController = require('../controllers/postGrades');
 const router = express.Router();
 
 // POST initial grade
-router.post('/upload', gradeController.uploadGrades);
+router.post('/initialGrades', gradeController.postInitial);
 
 // POST final grade
-//router.post('/final-grade', gradeController.postFinalGrade);
+router.post('/finalGrades', gradeController.postFinal);
 
 module.exports = router;

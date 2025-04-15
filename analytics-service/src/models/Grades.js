@@ -17,7 +17,11 @@ const Grades = sequelize.define('StudentGrade', {
     perQuestion: {
         type: DataTypes.JSONB,
         allowNull: false
-    }
+    },
+    isFinalized: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
 }, {
     tableName: 'grades', // Ensure your table name is 'grades' or adjust as necessary
     timestamps: true     // This adds createdAt and updatedAt fields

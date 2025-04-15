@@ -24,7 +24,8 @@ exports.getStudentGrades = async (req, res) => {
             studentId: gradeRecord.studentId,
             courseId: gradeRecord.courseId,
             totalGrade: gradeRecord.totalGrade,
-            perQuestion: gradeRecord.perQuestion
+            perQuestion: gradeRecord.perQuestion,
+            isFinalized: gradeRecord.isFinalized
         });
     } catch (error) {
         console.error('Error fetching student grades:', error.message);
