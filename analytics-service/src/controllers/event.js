@@ -3,7 +3,7 @@ const Grades = require('../models/Grades');
 const QuestionDistribution = require('../models/QuestionDistribution');
 const TotalGradeDistribution = require('../models/TotalGradesDistribution');
 
-function parseCourseMetadata(headerText) {
+function parseCourseMetagrades(headerText) {
   const regex = /ΒΑΘΜΟΛΟΓΙΟ\s+(.*?)\s+\((\d+)\)\s+(.+)/;
   const match = headerText.match(regex);
   if (!match) return null;
@@ -20,14 +20,16 @@ exports.handleEvent = async (req, res) => {
   
   console.log('Received event');
   try {
-    const headerText = data[0][0]; // First cell of the first row
-    const parsed = parseCourseMetadata(headerText);
-    const questionHeaders = data[0].slice(8, 18); // Extract headers (Q01, Q02, ...) from row 1 (Column I onward)
-    const scale = data[1][5]; // Column F
+    const  { instructorId, grades } = data;
+    const headerText = grades[0][0]; // First cell of the first row
+    const parsed = parseCourseMetagrades(headerText);
+    const questionHeaders = grades[2].slice(8, 18); // Extract headers (Q01, Q02, ...) from row 1 (Column I onward)
+    const scale = grades[3][5]; // Column F
     const maxGrade = parseInt(scale.split('-')[1]); // → 10
     const isFinalized = (type === 'FINAL_GRADES' ? true : false);
+    const courseId = parsed.courseId;
 
-    const parsedGrades = data.slice(1).map(row => ({
+    const parsedGrades = grades.slice(3).map(row => ({
       studentId: row[0], // Column A
       courseId: parsed.courseId,  // Column E
       examPeriod: parsed.examPeriod, // Column F
