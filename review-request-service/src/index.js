@@ -6,7 +6,7 @@ const sequelize = require('./config/db');
 
 
 app.use(express.json());
-app.use('/api/reviewRequest', reviewRequestRoutes);
+app.use('/', reviewRequestRoutes);
 
 const PORT = process.env.PORT;
 

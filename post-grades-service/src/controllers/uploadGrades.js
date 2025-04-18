@@ -34,7 +34,7 @@ function renameUploadedFile(filePath, prefix, headerCell) {
     return safeFilename;
 }
 
-exports.uploadInitial = async (req, res) => {
+exports.uploadInitialGrades = async (req, res) => {
     upload(req, res, async err => {
         if (err) return res.status(400).json({ error: err.message });
 
@@ -56,7 +56,7 @@ exports.uploadInitial = async (req, res) => {
     });
 };
 
-exports.uploadFinal = async (req, res) => {
+exports.uploadFinalGrades = async (req, res) => {
     upload(req, res, async err => {
         if (err) return res.status(400).json({ error: err.message });
 

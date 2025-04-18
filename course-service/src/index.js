@@ -5,7 +5,6 @@ const coursesRoutes = require('./routes/courses');
 const sequelize = require('./config/db');
 
 app.use(express.json());
-app.use('/api/courses', coursesRoutes);
 app.use('/', coursesRoutes);
 
 const PORT = process.env.PORT;

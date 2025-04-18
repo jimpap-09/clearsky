@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 app.use(express.json());
-app.use('/api/postGrades', postGradesRoutes);
+app.use('/', postGradesRoutes);
 
 const PORT = process.env.PORT;
 

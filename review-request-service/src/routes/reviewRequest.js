@@ -5,27 +5,27 @@ const requireRole = require('../middleware/roles');
 const router = express.Router();
 
 // POST a review request
-router.post('/create', 
+router.post('/createReviewRequest', 
     auth,
     requireRole('STUDENT'),
     reviewRequestController.createReviewRequest
 
 );
 // Reply to a review request
-router.put('/reply/:courseId/:studentId', 
+router.put('/replyToReviewRequest/:courseId/:studentId', 
     auth,
     requireRole('INSTRUCTOR'),
     reviewRequestController.respondToReviewRequest
 );
 
 // Get all review requests
-router.get('/', 
+router.get('/getAllReviewRequests', 
     auth,
     reviewRequestController.getAllReviewRequests
 );
 
 // Get review request
-router.get('/student/:courseId/:studentId', 
+router.get('/getReviewRequest/:courseId/:studentId', 
     auth,
     reviewRequestController.getStudentReviewRequest
 );

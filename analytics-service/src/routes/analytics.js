@@ -11,7 +11,7 @@ const requireRole = require('../middleware/roles');
 router.post('/events', 
     handleEvent.handleEvent);
 
-router.get('/student-grades/:studentId/:courseId', getStudentGrades.getStudentGrades);
+router.get('/studentGrades/:studentId/:courseId', getStudentGrades.getStudentGrades);
 
 router.get('/totalGradeDistribution/:courseId', getTotalGradeDistribution.getTotalGradeDistribution);
 

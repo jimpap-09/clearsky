@@ -5,7 +5,6 @@ const authRoutes = require('./routes/auth');
 const sequelize = require('./config/db');
 
 app.use(express.json());
-app.use('/api/auth', authRoutes);
 app.use('/', authRoutes);
 
 const PORT = process.env.PORT;
