@@ -4,7 +4,12 @@ import useAuth from "../../context/AuthContext"
 import DropDown from "./DropDown"
 
 export default function Navbar() {
-  const {user} = useAuth()
+  const {user} = useAuth();
+  const options = [
+    {label: "Profile", path: `/${user}`},
+    {label: "Settings", path: `/${user}`},
+    {label: "Log Out", path: "/"}
+]
   return (
     <nav className="navbar">
       <div className='logo-container'>
@@ -13,13 +18,13 @@ export default function Navbar() {
         </Link>
       </div>
       <ul>
-        <li><CustomLink to="/">Home</CustomLink></li>
+        <li><CustomLink to="/home">Home</CustomLink></li>
         <li><CustomLink to="/courses">Courses</CustomLink></li>
         <li><CustomLink to="/grades">Grades</CustomLink></li>
       </ul>
       {
         user
-        ? <DropDown/>
+        ? <DropDown options={options}/>
         :
         <div className='login'>
           <CustomLink to="/login">

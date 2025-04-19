@@ -1,20 +1,9 @@
 import React from 'react';
 
-export default function GradeStats () {
-
-    const tableHeaders = ['course name', 'exam period', 'initial grades submission', 'final grades submission'];
-    
+export default function GradeStats() {
     return (
-        <div>
-            <h2>Available course statistics</h2>
-            <table>
-                <tr>
-                {
-                    tableHeaders.map((th) =>
-                    <th>{th}</th>)
-                }
-                </tr>
-            </table>
+        <div className='grade-stats-container'>
+            <h2>Here is the Grade Stats Page</h2>
         </div>
     )
 }

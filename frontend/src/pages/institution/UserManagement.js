@@ -1,35 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import useAuth from "../context/AuthContext";
+import React, {useState} from 'react';
+import DropDown from '../../components/layout/DropDown'
 
-import "../styles/LoginPage.css";
-
-export default function Login() {
-    // we define a useState for each credential
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-
-    const { login } = useAuth()
-    const navigate = useNavigate()
-
-    // we prevent page refresh after submition
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        await login(username);
-        if(username === "student") 
-            navigate("/student");
-        else if(username === "instructor")
-            navigate("/instructor");
-        else if(username === "institution")
-            navigate("/institution");
-    }
+export default function UserManagement() {
+    const options = ['Instructor, student, representative']
+    const {username, setUsername} = useState('');
+    const {password, setPassword} = useState('');
 
     return (
         <>
-            <h1>Welcome to clearSky</h1>
-            <div className="main-container">
-                <h2>Please enter your credentials</h2>
-                <form onSubmit={handleSubmit}>
+        <div className="main-container">
+                <h2>Users</h2>
+                <form>
+                    <div className="label-container">
+                        <label>
+                            type:
+                        </label>
+                        <DropDown options={options}/>
+                    </div>
                     <div className="label-container">
                         <label>
                             Username:

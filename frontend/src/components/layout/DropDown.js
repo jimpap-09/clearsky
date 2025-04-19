@@ -3,13 +3,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../context/AuthContext';
 
-function DropDown() {
+function DropDown({options}) {
 
-    const options = [
-        {label: "Profile", path: "/courses"},
-        {label: "Settings", path: "/grades"},
-        {label: "Log Out", path: "/"}
-    ]
     const navigate = useNavigate();
     const { logout } = useAuth();
     const [ open, setOpen ] = useState(false);
@@ -47,7 +42,7 @@ function DropDown() {
                         ))
                     }
                 </ul>
-            )
+                )
             }
         </div>
     )
