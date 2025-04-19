@@ -1,0 +1,213 @@
+/*
+in this file
+we style the page layout:
+the navbar (top of the page)
+the container (main body)
+the footer (bottom of the page)
+*/
+
+/* width =  body + padding + border */
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+  }
+
+  /*
+  create a small gap
+  between navbar and main-container
+  */
+  .page-layout {
+    gap: 1rem;
+  }
+
+
+  /*
+    navbar css:
+    create some distance
+    between logo, navlinks and login button
+    necessity: display flex
+    give black color
+  */
+  .navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 0 1rem;
+  }
+
+  /* increase the font of logo */
+  .site-title {
+    font-size: 2rem;
+  }
+
+  /*
+    navbar links are inside divs
+    we give links height = navbar height
+    in order to have space
+    so we can put text in the center
+    remove default underline
+    and give white color
+  */
+  .navbar a {
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: white;
+  }
+
+  /*
+    remove default list style from navbar links
+    that are list items
+  */
+  .navbar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+  }
+
+  /*
+    give some padding between navbar links
+    link.size = li.size
+  */
+  .navbar li a {
+    padding: 0 1rem;
+  }
+
+  /* give bc when hover to navbar links */
+  .navbar a:hover {
+    background-color: #777;
+  }
+
+  /*
+    login = link
+    remove default margin and padding
+    fix the width
+    and give same bc color with navbar
+  */
+  .login {
+    margin: 0 0;
+    padding: 0 0;
+    width: 90px;
+    background-color: #333;
+    border: none;
+  }
+
+  /*
+    link = logintext + arrow
+    put text and arrow in the center
+    and give max width = login width = 90px
+  */
+  .login a {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /*
+    dropdown = dropdown-btn + dropdown-menu
+    position relative so dropdown-menu
+    can position relative to dropdown
+    flex-direction: column so dropdown-menu
+    goes down from dropdown-btn
+    align btn and menu in the center
+    give same width as login
+  */
+  .dropdown {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90px;
+  }
+
+  /*
+    give btn all the height and width
+    of dropdown to cover whole space (bigger button)
+    remove default button css from browser
+    give same bc and text color as navbar
+    dropdown-btn = button + arrow
+    put button and arrow next to each other
+    align button and dropdown arrow in the center
+    cursor is pointer
+  */
+  .dropdown-btn {
+    height: 100%;
+    width: 100%;
+    border-style: none;
+    background-color: #333;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  /*
+    give btn and arrow hover color
+    same as links hover color
+  */
+  .dropdown-btn:hover {
+    background-color: #777;
+  }
+
+  /*
+    position = absolute so dropdown-menu
+    positions according to dropdown (relative)
+    flex-direction: column
+    and align items to center
+    so options align as list items
+    (remove navbar list css and become normal list)
+    give same bc as the color of an active button-link
+  */
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #555;
+    color: white;
+  }
+
+  /*
+    list-items have different length cause of text.size
+    so we fix it with width = 100% to cover all space
+    give some padding between list-items = text = options
+    make pointer cursor ans give some nice border
+  */
+  .dropdown-menu li{
+    width: 100%;
+    margin: 0;
+    padding: .25rem 1rem;
+    cursor: pointer;
+    border-bottom-style:ridge;
+  }
+
+  /* give same bc hover */
+  .dropdown-menu li:hover {
+    background-color: #777;
+  }
+
+  /*
+    bc of an button-link when we have navigated to its path
+    eg. home link is active when we are in home page
+  */
+  .active {
+    background-color: #555;
+  }
+
+  /*
+    remove margin and paddin
+    and align header and  text to the center of the page
+  */
+  .main-container {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
