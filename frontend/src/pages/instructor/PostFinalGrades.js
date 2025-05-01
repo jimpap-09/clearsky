@@ -1,22 +1,22 @@
 import React from 'react';
 
-export default function PostInitGrades() {
+export default function PostFinalGrades() {
     return (
         <div className='post-init-container'>
             <h1>Instructor name</h1>
             <div className='main-container'>
-                <h2 className='main-container-header'>INITIAL GRADES POSTING</h2>
+                <h2 className='main-container-header'>FINAL GRADES POSTING</h2>
                 <div className='main-container-body'>
                     <form>
                         <div className='label-container'>
-                            <label className='main-container-label'> xlsx file with initial grades:</label>
+                            <label className='main-container-label'> xlsx file with FINAL grades:</label>
                             <input
                             type='file'
                             placeholder='select file to upload or drag and drop'
                             >
                             </input>
                         </div>
-                        <button type="submit">submit initial grades</button>
+                        <button type="submit">submit FINAL grades</button>
                     </form>
                 </div>
             </div>

@@ -28,40 +28,38 @@ export default function Login() {
         <>
             <h1>Welcome to clearSky</h1>
             <div className="main-container">
-                <h2>Please enter your credentials</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="label-container">
-                        <label>
-                            Username:
-                        </label>
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="label-container">
-                        <label>
-                            Password:
-                        </label>
-                        <input
-                            type="text"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className='submit-btn'>
-                        <button type="submit">
-                            Login
-                        </button>
-                    </div>  
-                </form>
+                <h2 className='main-container-header'>Please enter your credentials</h2>
+                <div className='main-container-body'>
+                    <form onSubmit={handleSubmit}>
+                        <div className="label-container">
+                            <label>Username:</label>
+                            <input
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="label-container">
+                            <label>Password:</label>
+                            <input
+                                type="text"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className='submit-btn'>
+                            <button type="submit">
+                                Login
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div className='message-area'>
                 <div className='main-container'>
-                    <h2>Message area</h2>
+                    <h2 className='main-container-header'>Message area</h2>
                     <div className='message-text'>
                         <p>write your message here</p>
                     </div>

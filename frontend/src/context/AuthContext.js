@@ -7,7 +7,6 @@ import { createContext, useContext, useState } from "react";
 */
 const AuthContext = createContext();
 
-
 function AuthProvider({ children }) {
 
   /* we create user state that stores the logged in userData */

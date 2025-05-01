@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function PostInitGrades() {
+export default function ReplyRR() {
     return (
-        <div className='post-init-container'>
+        <div className='reply-container'>
             <h1>Instructor name</h1>
             <div className='main-container'>
                 <h2 className='main-container-header'>INITIAL GRADES POSTING</h2>

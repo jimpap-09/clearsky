@@ -5,12 +5,11 @@ form {
 
 .label-container {
     display: grid;
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 200px 1fr;
     align-items: center;
     margin: 1.5rem 0;
     gap: 2rem;
 }
-
 
 label {
     font-weight: bold;
