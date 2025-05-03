@@ -93,7 +93,7 @@ export default function GradeStatistics() {
             <div style={{fontsize: '1.5rem', fontWeight: 'bold'}}>Available Course Statistics</div>
             <button
               style={{height: '30px', display: 'flex', alignItems: 'center'}}
-              onClick={(e) => navigate('/')}
+              onClick={(e) => navigate('/student/my-courses')}
             >
               My Courses
             </button>

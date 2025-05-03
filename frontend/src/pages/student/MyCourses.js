@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { Container } from 'lucide-react';
+import React from 'react';
 import {useNavigate} from 'react-router-dom';
 
 // courses data
@@ -9,37 +10,45 @@ const courses = [
 ];
 
 // course table
-function CourseTable({ selectedCourse, onSelect }) {
+function CourseTable() {
+
+  const navigate = useNavigate();
   return (
     <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>
       <thead>
         <tr style={{ backgroundColor: '#f0f0f0' }}>
           <th>Course Name</th>
           <th>Exam Period</th>
-          <th>status</th>
+          <th>Grading status</th>
           <th>action</th>
         </tr>
       </thead>
       <tbody>
         {courses.map((course, index) => {
-          const isSelected = selectedCourse === course.name;
           return (
             <tr
               key={index}
-              onClick={() => onSelect(course.name)}
-              style={{
-                cursor: 'pointer',
-                backgroundColor: isSelected ? '#cce5ff' : undefined,
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e6f0ff')}
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.backgroundColor = isSelected ? '#cce5ff' : '')
-              }
+              style={{cursor: 'pointer', textAlign: 'center'}}
             >
               <td>{course.name}</td>
               <td>{course.period}</td>
               <td>{course.status}</td>
-              <td>{course.action || '-'}</td>
+              <td style={{ display: 'flex', gap: '1rem'}}>
+                <button onClick={()=>navigate('/student/personal-grades')}>View My Grades</button>
+                <button onClick={()=>navigate('/student/request-review')}
+                        disabled={course.status !== 'open'}
+                        style={{
+                          backgroundColor: course.status !== 'open' ? '#eee' : '#d4f4fa',
+                          cursor: course.status !== 'open' ? 'not-allowed' : 'pointer',
+                        }}        
+                >Ask for Review</button>
+                <button onClick={()=>navigate('/student/status')} disabled={course.status === 'open'}
+                style={{
+                  backgroundColor: course.status === 'open' ? '#eee' : '#d4f4fa',
+                  cursor: course.status === 'open' ? 'not-allowed' : 'pointer',
+                }}  
+                >View Review Status</button>
+              </td>
             </tr>
           );
         })}
@@ -50,8 +59,6 @@ function CourseTable({ selectedCourse, onSelect }) {
 
 // main page
 export default function MyCourses() {
-  const [selectedCourse, setSelectedCourse] = useState(null);
-
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial' }}>
       <div className='main-container'>
@@ -59,7 +66,7 @@ export default function MyCourses() {
             <div style={{fontsize:'1.5rem', fontWeight:'bold'}}>Student name, email,</div>
         </div>
         <div className='main-container-body'>
-          <CourseTable selectedCourse={selectedCourse} onSelect={setSelectedCourse} />
+          <CourseTable />
         </div>
       </div>
     </div>
