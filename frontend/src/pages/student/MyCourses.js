@@ -1,4 +1,3 @@
-import { Container } from 'lucide-react';
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
 
@@ -11,7 +10,6 @@ const courses = [
 
 // course table
 function CourseTable() {
-
   const navigate = useNavigate();
   return (
     <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>
@@ -30,25 +28,25 @@ function CourseTable() {
               key={index}
               style={{cursor: 'pointer', textAlign: 'center'}}
             >
-              <td>{course.name}</td>
-              <td>{course.period}</td>
-              <td>{course.status}</td>
-              <td style={{ display: 'flex', gap: '1rem'}}>
-                <button onClick={()=>navigate('/student/personal-grades')}>View My Grades</button>
-                <button onClick={()=>navigate('/student/request-review')}
-                        disabled={course.status !== 'open'}
-                        style={{
-                          backgroundColor: course.status !== 'open' ? '#eee' : '#d4f4fa',
-                          cursor: course.status !== 'open' ? 'not-allowed' : 'pointer',
-                        }}        
-                >Ask for Review</button>
-                <button onClick={()=>navigate('/student/status')} disabled={course.status === 'open'}
-                style={{
-                  backgroundColor: course.status === 'open' ? '#eee' : '#d4f4fa',
-                  cursor: course.status === 'open' ? 'not-allowed' : 'pointer',
-                }}  
-                >View Review Status</button>
-              </td>
+            <td>{course.name}</td>
+            <td>{course.period}</td>
+            <td>{course.status}</td>
+            <td style={{ display: 'flex', gap: '1rem'}}>
+              <button onClick={()=>navigate('/student/personal-grades')}>View My Grades</button>
+              <button onClick={()=>navigate('/student/request-review')}
+                      disabled={course.status !== 'open'}
+                      style={{
+                        backgroundColor: course.status !== 'open' ? '#eee' : '#d4f4fa',
+                        cursor: course.status !== 'open' ? 'not-allowed' : 'pointer',
+                      }}        
+              >Ask for Review</button>
+              <button onClick={()=>navigate('/student/status')} disabled={course.status === 'open'}
+              style={{
+                backgroundColor: course.status === 'open' ? '#eee' : '#d4f4fa',
+                cursor: course.status === 'open' ? 'not-allowed' : 'pointer',
+              }}  
+              >View Review Status</button>
+            </td>
             </tr>
           );
         })}
