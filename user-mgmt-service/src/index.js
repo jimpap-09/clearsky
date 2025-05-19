@@ -4,6 +4,9 @@ const app = express();
 const authRoutes = require('./routes/auth');
 const sequelize = require('./config/db');
 
+const cors = require('cors');
+app.use(cors());
+
 app.use(express.json());
 app.use('/', authRoutes);
 

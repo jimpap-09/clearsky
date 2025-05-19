@@ -1,106 +1,84 @@
-import React, { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
-
-// courses data
-const courses = [
-  { name: 'physics', period: 'fall 2024', initial: '2025-02-22', final: '2025-02-28' },
-  { name: 'software', period: 'fall 2024', initial: '2025-02-01', final: '' },
-  { name: 'mathematics', period: 'fall 2024', initial: '2025-02-02', final: '2025-02-14' },
-];
-
-// course table
-function CourseTable({ selectedCourse, onSelect }) {
-  return (
-    <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>
-      <thead>
-        <tr style={{ backgroundColor: '#f0f0f0' }}>
-          <th>Course Name</th>
-          <th>Exam Period</th>
-          <th>Initial Grades Submission</th>
-          <th>Final Grades Submission</th>
-        </tr>
-      </thead>
-      <tbody>
-        {courses.map((course, index) => {
-          const isSelected = selectedCourse === course.name;
-          return (
-            <tr
-              key={index}
-              onClick={() => onSelect(course.name)}
-              style={{
-                cursor: 'pointer',
-                backgroundColor: isSelected ? '#cce5ff' : undefined,
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e6f0ff')}
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.backgroundColor = isSelected ? '#cce5ff' : '')
-              }
-            >
-              <td>{course.name}</td>
-              <td>{course.period}</td>
-              <td>{course.initial}</td>
-              <td>{course.final || '-'}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  );
-}
-
-// card statistics
-function StatsCards({ course }) {
-  if (!course) return null;
-
-  const base = course.charAt(0).toUpperCase() + course.slice(1);
-  const titles = [`${base} - Total`, `${base} - Q1`, `${base} - Q2`, `${base} - Q3`, `${base} - Q4`];
-
-  return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: '20px',
-      }}
-    >
-      {titles.map((title, index) => (
-        <div
-          key={index}
-          style={{
-            border: '1px solid #ccc',
-            borderRadius: '8px',
-            padding: '10px',
-            backgroundColor: '#fafafa',
-          }}
-        >
-          <h4>{title}</h4>
-          <div style={{ height: '100px', textAlign: 'center', color: '#888' }}>Graph Placeholder</div>
-        </div>
-      ))}
-    </div>
-  );
-}
+import {useState, useEffect} from 'react';
+import { fetchCourseData, fetchStudentGrades } from '../../api/coursesStats';
+import StudentCourseTable from '../../components/ui/StudentCourseTable';
+import {useParams, useLocation} from 'react-router-dom';
+import GradesBox from '../../components/ui/GradesBox';
 
 // main page
-export default function GradeStatistics() {
-  const [selectedCourse, setSelectedCourse] = useState(null);
-  const navigate = useNavigate();
+export default function PersonalGrades() {
+  const [studentGrades, setStudentGrades] = useState([]);
+  const [studentCourses, setStudentCourses] = useState([]);
+  const [selectedStudentCourse, setSelectedStudentCourse] = useState(null);
+  const [courseStats, setCourseStats] = useState(null);
+  const [questionStats, setQuestionStats] = useState(null);
+  const {studentId, courseId} = useParams();
+  const {state} = useLocation();
+
+  useEffect(() => {
+    if (state) {
+      setStudentCourses(state.courses);
+    }
+  }, [state]);
+
+  console.log('Parameters: ', useParams());
+  console.log('Location:', useLocation());
+  console.log('courseId: ', courseId);
+  console.log('studentId: ', studentId);
+  console.log('courses: ', studentCourses);
+  console.log('selected course: ', selectedStudentCourse);
+
+  useEffect(() => {
+    const loadGrades = async () => {
+      const data = await fetchStudentGrades(studentId, courseId);
+      console.log("Grades Fetched: ", data);
+      setStudentGrades(data);
+
+      setStudentCourses((prevCourses) =>
+        prevCourses.map((course) => {
+          if (course.id === courseId) {
+            const updatedCourse = {
+              ...course,
+              status: data.isFinalized === false ? 'open' : 'close'
+            };
+            setSelectedStudentCourse(updatedCourse);
+            return updatedCourse;
+          }
+          return course;
+        })
+      );
+    };
+    if (studentId) loadGrades();
+  }, [courseId, studentId]);
+
+  useEffect(() => {
+    const loadStats = async () => {
+      if (!selectedStudentCourse) return;
+      const stats = await fetchCourseData(selectedStudentCourse);
+      console.log("Courses Stats: ", stats?.tot_course_grades);
+      console.log("Question Stats: ", stats?.tot_question_grades);
+      setCourseStats(stats?.tot_course_grades);
+      setQuestionStats(stats?.tot_question_grades);
+    };
+    loadStats();
+  }, [selectedStudentCourse]);
+
+  console.log("Selected Course: ", selectedStudentCourse);
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial' }}>
       <div className='main-container'>
         <div className='main-container-header'>
-            <div style={{fontsize: '1.5rem', fontWeight: 'bold'}}>Available Course Statistics</div>
-            <button
-              style={{height: '30px', display: 'flex', alignItems: 'center'}}
-              onClick={(e) => navigate('/')}
-            >
-              My Courses
-            </button>
+            <div style={{fontsize:'1.5rem', fontWeight:'bold'}}>Student name, email,</div>
         </div>
         <div className='main-container-body'>
-          <CourseTable selectedCourse={selectedCourse} onSelect={setSelectedCourse} />
-          <StatsCards course={selectedCourse} />
+          <StudentCourseTable courses={studentCourses} selectedCourse={selectedStudentCourse} onSelect={setSelectedStudentCourse} />
+          {selectedStudentCourse && studentGrades && (
+          <GradesBox 
+            course={selectedStudentCourse} 
+            grades={{ total: studentGrades.totalGrade, ...studentGrades.perQuestion }} 
+            title={'My grades'} 
+          />
+          )}
         </div>
       </div>
     </div>

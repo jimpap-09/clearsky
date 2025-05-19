@@ -10,5 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
+    "saas25-09": "file:"
   }
 }

@@ -4,6 +4,9 @@ const app = express();
 const coursesRoutes = require('./routes/courses');
 const sequelize = require('./config/db');
 
+const cors = require('cors');
+app.use(cors());
+
 app.use(express.json());
 app.use('/', coursesRoutes);
 

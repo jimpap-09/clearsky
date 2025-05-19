@@ -5,6 +5,10 @@ const sequelize = require('./config/db');
 const eventsRoutes = require('./routes/events');
 
 const app = express();
+
+const cors = require('cors');
+app.use(cors());
+
 app.use(express.json());
 app.use('/', eventsRoutes);
 
