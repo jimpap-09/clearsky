@@ -10,13 +10,13 @@ const requireRole = require('../middleware/roles');
 router.post('/uploadInitialGrades', 
     auth,
     requireRole('INSTRUCTOR'),
-    uploadController.uploadInitial);
+    uploadController.uploadInitialGrades);
 
 // POST final grade
 router.post('/uploadFinalGrades', 
     auth,
     requireRole('INSTRUCTOR'),
-    uploadController.uploadFinal);
+    uploadController.uploadFinalGrades);
 
 // Validate metadata and send
 

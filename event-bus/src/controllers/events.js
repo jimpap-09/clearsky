@@ -66,7 +66,3 @@ exports.receiveEvent = async (req, res) => {
     }
 };
 
-exports.getAllEvents = async (req, res) => {
-    const events = await Event.findAll({ order: [['createdAt', 'DESC']] });
-    res.send(events);
-};
