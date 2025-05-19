@@ -1,27 +1,42 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from "../context/AuthContext";
+import { get_login_url } from '../apiConfig';
+import axios from 'axios'
+import {jwtDecode} from 'jwt-decode';
 
 import "../styles/LoginPage.css";
 
 export default function Login() {
     // we define a useState for each credential
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { login } = useAuth()
-    const navigate = useNavigate()
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     // we prevent page refresh after submition
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await login(username);
-        if(username === "student") 
-            navigate("/student");
-        else if(username === "instructor")
-            navigate("/instructor");
-        else if(username === "institution")
-            navigate("/institution");
+        try {
+            const res = await axios.post(get_login_url, {
+                email, password
+            });
+            const {token} = res.data;
+            console.log(`loggin in with token: ${token}`);
+            await login(token);
+            const decoded = jwtDecode(token);
+            console.log(decoded.role);
+            const role = decoded.role;
+            if(role === 'STUDENT') navigate(`/student/${decoded.id}`);
+            else if(role === 'INSTRUCTOR') navigate(`/instructor/${decoded.id}/post-init-grades`);
+            else if(role === 'ADMIN') navigate(`/institution/${decoded.id}`);
+            else navigate("/");
+        }
+        catch (error) {
+            alert("Login failed. Please check your credentials");
+            console.error(error);
+        }
     }
 
     return (
@@ -32,11 +47,11 @@ export default function Login() {
                 <div className='main-container-body'>
                     <form onSubmit={handleSubmit}>
                         <div className="label-container">
-                            <label>Username:</label>
+                            <label>Email:</label>
                             <input
                                 type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
                         </div>
@@ -52,6 +67,11 @@ export default function Login() {
                         <div className='submit-btn'>
                             <button type="submit">
                                 Login
+                            </button>
+                            <button type="button"
+                                    style = {{margin: "0 0 0 1rem"}}
+                                    onClick={(e) => navigate('/sign-up')}>
+                                Register
                             </button>
                         </div>
                     </form>

@@ -2,15 +2,16 @@ import { CornerDownLeft } from 'lucide-react'
 import { Link, useMatch, useResolvedPath, useNavigate } from "react-router-dom"
 import useAuth from "../../context/AuthContext"
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import {React, useState} from 'react'
+import {useState} from 'react'
 
 export default function Navbar() {
-  const {user} = useAuth();
-  const options = [
-    {label: "Profile", path: `/${user}`},
-    {label: "Settings", path: `/${user}`},
+  const {userData} = useAuth();
+  const options = userData ? [
+    {label: "Profile", path: `/${userData.role}`},
+    {label: "Settings", path: `/${userData.role}`},
     {label: "Log Out", path: "/"}
-]
+  ] : [];
+  
   return (
     <nav className="navbar">
       <div className='logo-container'>
@@ -24,7 +25,7 @@ export default function Navbar() {
         <li><CustomLink to="/grades">Grades</CustomLink></li>
       </ul>
       {
-        user
+        userData && userData.role
         ? <DropDown options={options}/>
         :
         <div className='login'>

@@ -286,3 +286,23 @@ the footer (bottom of the page)
   .message-text {
     padding: 10px;
   }
+
+  .main-button {
+    padding: 0.75rem;
+    background-color: #F0FFFF;
+    color: inherit;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    max-width: 200px;
+    min-width: 100px;
+  }
+
+  .main-button:hover {
+    background-color: #FFEBCD;
+  }
+
+  .main-button:disabled {
+    background-color: #eee;
+    cursor: not-allowed;
+  }

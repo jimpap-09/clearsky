@@ -6,6 +6,9 @@ const sequelize = require('./config/db');
 const fs = require('fs');
 const path = require('path');
 
+const cors = require('cors');
+app.use(cors());
+
 app.use(express.json());
 app.use('/', postGradesRoutes);
 
