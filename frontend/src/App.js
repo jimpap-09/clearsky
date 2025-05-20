@@ -8,9 +8,6 @@ import PostInitGrades from "./pages/instructor/PostInitGrades"
 import PostFinalGrades from "./pages/instructor/PostFinalGrades"
 import GradeStats from "./pages/GradeStats"
 import MyCourses from "./pages/student/MyCourses"
-import PersonalGrades from "./pages/student/PersonalGrades"
-import GradeRR from "./pages/student/GradeRR"
-import StatusGradeRR from "./pages/student/StatusGradeRR"
 
 import "./styles/PageLayout.css"
 
@@ -40,9 +37,6 @@ export default function App() {
           <Route path="/student/:studentId" element={<GradeStats />} />
           <Route path="/student/:studentId/grades" element={<GradeStats />} />
           <Route path="/student/:studentId/my-courses" element={<MyCourses />} />
-          <Route path="/student/:studentId/:courseId/personal-grades" element={<PersonalGrades />} />
-          <Route path="/student/:studentId/:courseId/request-review" element={<GradeRR />} />
-          <Route path="/student/:studentId/:courseId/status" element={<StatusGradeRR />} />
         </Routes>
       </div>
     </div>

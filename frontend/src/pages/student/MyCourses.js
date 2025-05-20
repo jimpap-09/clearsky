@@ -2,13 +2,15 @@ import {useState, useEffect} from 'react';
 import useAuth from '../../context/AuthContext';
 import { fetchStudentCourses } from '../../api/courses';
 import StudentCourseTable from '../../components/ui/StudentCourseTable';
+import RenderContent from '../../components/ui/RenderContent';
 
 // my courses - main page
 export default function MyCourses() {
   const {userData} = useAuth();
+  const id = userData?.id;
   const [studentCourses, setStudentCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const id = userData?.id;
+  const [currentView, setCurrentView] = useState('');
 
   // fetch all student courses
   useEffect(() => {
@@ -24,10 +26,21 @@ export default function MyCourses() {
     <div style={{ padding: '20px', fontFamily: 'Arial' }}>
       <div className='main-container'>
         <div className='main-container-header'>
-            <div style={{fontsize:'1.5rem', fontWeight:'bold'}}>Student name, email,</div>
+          <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Student name, email</div>
         </div>
         <div className='main-container-body'>
-          <StudentCourseTable userData={userData} courses={studentCourses} selectedCourse={selectedCourse} onSelect={setSelectedCourse} />
+          <StudentCourseTable
+            courses={studentCourses}
+            selectedCourse={selectedCourse}
+            onSelect={setSelectedCourse}
+            setView={setCurrentView}
+          />
+          {<RenderContent
+            id={id}
+            selectedCourse={selectedCourse}
+            setCurrentView={setCurrentView}
+            currentView={currentView}
+          />}
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-export default function GradeBox({ course, grades }) {
+export default function GradesBox({ course, grades }) {
   return (
     <div style={{
       border: '1px solid #ccc',
@@ -13,8 +13,7 @@ export default function GradeBox({ course, grades }) {
         marginBottom: '10px',
         fontWeight: 'bold'
       }}>
-        <span style={{marginRight: '10px'}}>my grades</span>
-        <span>{course.name} - {course.period}</span>
+        <span style={{marginRight: '10px'}}> My Grades </span>
       </div>
 
       {Object.entries(grades).map(([label, val]) => (
