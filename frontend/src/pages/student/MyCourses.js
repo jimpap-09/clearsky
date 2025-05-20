@@ -3,20 +3,21 @@ import useAuth from '../../context/AuthContext';
 import { fetchStudentCourses } from '../../api/courses';
 import StudentCourseTable from '../../components/ui/StudentCourseTable';
 
-// main page
+// my courses - main page
 export default function MyCourses() {
   const {userData} = useAuth();
   const [studentCourses, setStudentCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const id = userData?.id;
 
+  // fetch all student courses
   useEffect(() => {
     const loadCourses = async () => {
       const data = await fetchStudentCourses(id);
       console.log("Courses Fetched: ", data);
       setStudentCourses(data);
     };
-    if (id) loadCourses();
+    if(id) loadCourses();
   }, [id]);
 
   return (
