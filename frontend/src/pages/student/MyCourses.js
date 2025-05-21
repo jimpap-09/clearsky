@@ -35,14 +35,16 @@ export default function MyCourses() {
             onSelect={setSelectedCourse}
             setView={setCurrentView}
           />
-          {<RenderContent
-            id={id}
-            selectedCourse={selectedCourse}
-            setCurrentView={setCurrentView}
-            currentView={currentView}
-          />}
         </div>
       </div>
-    </div>
+      <RenderContent
+        id={id}
+        setSelectedCourse={setSelectedCourse}
+        selectedCourse={selectedCourse}
+        setCurrentView={setCurrentView}
+        currentView={currentView}
+        personal={true}
+      />
+      </div>
   );
 }

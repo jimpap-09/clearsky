@@ -37,7 +37,7 @@ export default function StudentCourseTable({courses, selectedCourse, onSelect, s
               <td>{course.name}</td>
               <td>{course.period}</td>
               <td>{course.status}</td>
-              <td style={{ display: 'flex', gap: '1rem'}}>
+              <td style={{ display: 'flex', justifyContent: 'space-around',}}>
                 <button
                   onClick={()=>{setView('grades'); console.log('currentView = grades')}}
                 >
@@ -46,14 +46,14 @@ export default function StudentCourseTable({courses, selectedCourse, onSelect, s
                 <button
                   className='main-button'
                   onClick={()=>{setView('review'); console.log('currentView = review')}}
-                  disabled={!course.status || course.status !== 'open'}
+                  // disabled={!course.status || course.status !== 'open'}
                 >
                   Ask for Review
                 </button>
                 <button
                   className='main-button'
                   onClick={()=>{setView('status'); console.log('currentView = status')}}
-                  disabled={!course.status || course.status === 'open'}
+                  // disabled={!course.status || course.status === 'open'}
                 >
                   View Review Status
                 </button>

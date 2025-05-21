@@ -306,3 +306,12 @@ the footer (bottom of the page)
     background-color: #eee;
     cursor: not-allowed;
   }
+
+  .graphs {
+    display: grid;
+    min-width: 1000px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-auto-columns: min-content;
+    gap: 10px;
+    align-items: start;
+  }

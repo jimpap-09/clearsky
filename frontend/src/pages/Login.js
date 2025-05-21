@@ -23,7 +23,7 @@ export default function Login() {
                 email, password
             });
             const {token} = res.data;
-            console.log(`loggin in with token: ${token}`);
+            console.log(`log gin in with token: ${token}`);
             await login(token);
             const decoded = jwtDecode(token);
             console.log(decoded.role);
