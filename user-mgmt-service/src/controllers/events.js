@@ -9,13 +9,15 @@ exports.handleEvent = async (req, res) => {
 
     try {
         const usersToCreate = [];
-        const { instructorId, grades } = data;
+        const { grades } = data;
+
         // Skip the header row
         for (let i = 3; i < grades.length; i++) {
             const row = grades[i];
             const studentId = row[0];
+            const name = row[1];
             const email = row[2];
-            if (!studentId || !email) continue;
+            if (!studentId || !email || !name) continue;
 
             const existingUser = await User.findByPk(studentId);
             if (!existingUser) {
@@ -26,6 +28,7 @@ exports.handleEvent = async (req, res) => {
                     email,
                     passwordHash,
                     role: 'STUDENT',
+                    name,
                 });
             }
         }
