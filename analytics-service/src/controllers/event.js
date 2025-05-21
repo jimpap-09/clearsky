@@ -20,7 +20,7 @@ exports.handleEvent = async (req, res) => {
   
   console.log('Received event');
   try {
-    const  { instructorId, grades } = data;
+    const  { grades } = data;
     const headerText = grades[0][0]; // First cell of the first row
     const parsed = parseCourseMetagrades(headerText);
     const questionHeaders = grades[2].slice(8, 18); // Extract headers (Q01, Q02, ...) from row 1 (Column I onward)

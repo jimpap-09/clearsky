@@ -17,7 +17,7 @@ function parseCourseMetadata(headerText) {
 }
 
 exports.handleEvent = async (req, res) => {
-    const { data } = req.body;
+    const { type, data } = req.body;
 
     try {
         const { instructorId, grades } = data;
@@ -28,7 +28,8 @@ exports.handleEvent = async (req, res) => {
             return res.status(400).json({ error: 'Could not parse course metadata.' });
         }
 
-        const { courseId, courseName } = metadata;
+        const { courseId, courseName, examPeriod } = metadata;
+        console.log('Exam Period:', examPeriod);
 
         // Check if the course exists, if not create it
         let course = await Course.findByPk(courseId);
@@ -36,6 +37,8 @@ exports.handleEvent = async (req, res) => {
             course = await Course.create({
                 id: courseId,
                 title: courseName,
+                period: examPeriod,
+                status: (type === 'FINAL_GRADES') ? 'closed' : 'open'
             });
         }
 
