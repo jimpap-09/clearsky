@@ -4,6 +4,7 @@ const Course = require('../models/Course');
 const StudentCourse = require('../models/StudentCourse');
 const InstructorCourse = require('../models/InstructorCourse');
 
+// receive course name, id and period from the title of xlsx
 function parseCourseMetadata(headerText) {
     const regex = /ΒΑΘΜΟΛΟΓΙΟ\s+(.*?)\s+\((\d+)\)\s+(.+)/;
     const match = headerText.match(regex);
