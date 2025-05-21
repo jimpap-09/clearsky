@@ -77,3 +77,18 @@ exports.getStudentReviewRequest = async (req, res) => {
     res.status(500).json({ error: 'Failed to retrieve review request' });
   }
 }
+
+exports.getCourseReviewRequests = async (req, res) => {
+  const { courseId } = req.params;
+
+  try {
+    const requests = await ReviewRequest.findAll({
+      where: { courseId }
+    });
+
+    res.status(200).json(requests);
+  } catch (err) {
+    console.error('Fetch course review requests error:', err.message);
+    res.status(500).json({ error: 'Failed to retrieve review requests' });
+  }
+}

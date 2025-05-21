@@ -11,6 +11,7 @@ export default function SignUp() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('STUDENT');
+    const [name, setName] = useState('');
 
     const navigate = useNavigate();
 
@@ -49,14 +50,16 @@ export default function SignUp() {
                 id: username,
                 email,
                 password,
-                role
+                role,
+                name
             };
             console.log("Sending data:", data);       
             await axios.post(post_register_url, {
                 id: username,
                 email,
                 password,
-                role
+                role,
+                name
             });
             alert("Register Successful. Continue to login...");
             navigate('/login');
@@ -99,6 +102,14 @@ export default function SignUp() {
                                 onChange={handleEmailChange}
                                 required
                                 disabled={role === 'STUDENT'}
+                            />
+                        </div>
+                        <div className="label-container">
+                            <label>Name:</label>
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => {setName(e.target.value)}}
                             />
                         </div>
                         <div className="label-container">

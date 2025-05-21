@@ -1,9 +1,10 @@
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('../utils/jwt');
 const User = require('../models/User');
 
 exports.register = async (req, res) => {
-    const { id, email, password, role } = req.body;
+    const { id, email, password, role, name } = req.body;
     
     try {
         // Hash password
@@ -17,11 +18,11 @@ exports.register = async (req, res) => {
             id,
             email,
             passwordHash: hash,
-            role
+            role,
+            name
         });
-    
 
-        res.status(201).json({ message: 'User created', user: { id: user.id, email, role } });
+        res.status(201).json({ message: 'User created', user: { id: user.id, email, role, name } });
     } catch (err) {
         console.error(err);
         res.status(400).json({ error: 'Registration failed' });
@@ -38,7 +39,7 @@ exports.login = async (req, res) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user.id, role: user.role, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign({ id: user.id, role: user.role, email: user.email, name: user.name }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
         console.log('User login');
         res.json({ token });

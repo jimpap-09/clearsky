@@ -1,24 +1,31 @@
-export default function GradeBox({ course, grades }) {
+export default function GradesBox({ course, grades }) {
   return (
-    <div style={{
+    <div
+      className="main-container"
+      style={{
       border: '1px solid #ccc',
       borderRadius: '8px',
-      padding: '10px',
+      // padding: '10px',
       maxWidth: '200px',
       fontFamily: 'Arial, sans-serif'
     }}>
-      <div style={{
+      <h4
+        className="main-container-header"
+        style={{
         display: 'flex',
         justifyContent: 'space-between',
         marginBottom: '10px',
         fontWeight: 'bold'
       }}>
-        <span style={{marginRight: '10px'}}>my grades</span>
-        <span>{course.name} - {course.period}</span>
-      </div>
+         My Grades-{course.name}-{course.period}
+      </h4>
 
       {Object.entries(grades).map(([label, val]) => (
-        <div key={label} style={{ marginBottom: '10px' }}>
+        <div
+          className="main-container-body"
+          key={label} 
+          style={{ marginBottom: '10px' }}
+        >
           <label style={{ display: 'block', marginBottom: '4px' }}>{label}</label>
           <input
             type="text"

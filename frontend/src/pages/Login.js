@@ -1,43 +1,38 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from "../context/AuthContext";
 import { get_login_url } from '../apiConfig';
 import axios from 'axios'
-import {jwtDecode} from 'jwt-decode';
-
+import { buildPath } from '../utils/routes';
 import "../styles/LoginPage.css";
 
+// login - main page
 export default function Login() {
     // we define a useState for each credential
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { login } = useAuth();
+    const { login, userData } = useAuth();
     const navigate = useNavigate();
 
-    // we prevent page refresh after submition
+    // check for valid email and password
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(get_login_url, {
-                email, password
-            });
-            const {token} = res.data;
-            console.log(`loggin in with token: ${token}`);
+            const res = await axios.post(get_login_url, { email, password });
+            const { token } = res.data;
             await login(token);
-            const decoded = jwtDecode(token);
-            console.log(decoded.role);
-            const role = decoded.role;
-            if(role === 'STUDENT') navigate(`/student/${decoded.id}`);
-            else if(role === 'INSTRUCTOR') navigate(`/instructor/${decoded.id}/post-init-grades`);
-            else if(role === 'ADMIN') navigate(`/institution/${decoded.id}`);
-            else navigate("/");
-        }
-        catch (error) {
+        } catch (error) {
             alert("Login failed. Please check your credentials");
             console.error(error);
         }
-    }
+    };
+
+    // for each userData (student, instructor, admin)
+    // navigate to the specific route respectively
+    useEffect(() => {
+        if (userData) navigate(buildPath(userData))
+    }, [userData, navigate]);
 
     return (
         <>

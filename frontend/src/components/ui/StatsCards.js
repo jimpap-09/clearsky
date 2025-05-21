@@ -5,13 +5,10 @@ export default function StatsCards({ course, courseStats, title }) {
   if (!course || !courseStats) {
     return (
       <div style={{ padding: '20px', textAlign: 'center', color: '#888' }}>
-        Select a course to view statistics.
+        Log in or select a course to view statistics.
       </div>
     );
   }
-
-  const course_name = course.name;
-  const base = course_name.charAt(0).toUpperCase() + course_name.slice(1);
 
   const totalAverages = Object.entries(courseStats).map(([grade, count]) => ({
     grade,
@@ -22,23 +19,23 @@ export default function StatsCards({ course, courseStats, title }) {
 
   return (
     <div
-      style={{display: 'grid', gap: '20px'}}
+      style={{gap: '20px'}}
     >
       {/* Total Grades */}
       <div
+        className="main-container"
         style={{
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          padding: '10px',
-          marginBottom: '30px',
-          marginTop: '30px',
-          // backgroundColor: '#f0f8ff',
-          minWidth: '500px',
-          maxWidth: '900px',
+          marginBottom: '15px',
+          maxWidth: '320px',
+          maxHeight: '350px',
+          minWidth: '280px',
+          flex: '1 1 300px',
         }}
       >
-        <h4>{base} - {title}</h4>
-        <TotalGradeHistogram data={totalAverages} />
+        <h4 className="main-container-header">{course.name} - {course.period} - {title}</h4>
+        <div className="main-container-body">
+          <TotalGradeHistogram data={totalAverages} />
+        </div>
       </div>
     </div>
   );
