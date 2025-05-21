@@ -37,7 +37,7 @@ export default function App() {
           {/* instructor routes */}
           <Route path="/instructor" element={<GradeStats />} />
           <Route path="/instructor/register" element={<Register />} />
-          <Route path="/instructor/:instructorId" element={<GradeStats />} />
+          <Route path="/instructor/:instructorId" element={<MyCourses />} />
           <Route path="/instructor/:instructorId/profile" element={<Profile />} />
           <Route path="/instructor/:instructorId/my-courses" element={<GradeStats />} />
           <Route path="/instructor/:instructorId/post-init-grades" element={<PostInitGrades />} />

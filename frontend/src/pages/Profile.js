@@ -5,6 +5,8 @@ export default function Profile() {
     console.log('userData = ', userData);
     return(
         <div>
+            {userData && (
+            <>
             <h1>Welcome to your profile page</h1>
             <form
                 style={{
@@ -25,10 +27,16 @@ export default function Profile() {
                     <input readOnly value={userData.email}/>
                 </div>
                 <div style={{display:'flex', gap: '10px'}}> 
+                    <label>name:</label>
+                    <input readOnly value={userData.name}/>
+                </div>
+                <div style={{display:'flex', gap: '10px'}}> 
                     <label>role:</label>
                     <input readOnly value={userData.role}/>
                 </div>
             </form>
+            </>
+            )}
         </div>
     );
 }

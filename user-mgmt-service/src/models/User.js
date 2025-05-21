@@ -20,6 +20,10 @@ const User = sequelize.define('User', {
         type: DataTypes.ENUM('STUDENT', 'INSTRUCTOR', 'ADMIN'),
         allowNull: false
     },
+    name: {
+    type: DataTypes.STRING,
+    allowNull: true // ή false, αν είναι υποχρεωτικό
+    }
 }, {
     tableName: 'users',
     timestamps: true

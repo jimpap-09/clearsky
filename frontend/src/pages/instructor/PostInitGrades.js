@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {useParams} from 'react-router-dom'
 import axios from 'axios'
 import {post_init_grades_url, post_validate_url} from '../../apiConfig'
@@ -7,8 +7,14 @@ import useAuth from '../../context/AuthContext'
 export default function PostInitGrades() {
 
     const { instructorId } = useParams();
-    const [file, setFile] = useState(null);
     const {token} = useAuth();
+
+    const [file, setFile] = useState(null);
+    const [courseId, setCourseId] = useState('');
+    const [name, setName] = useState('');
+    const [period, setPeriod] = useState('');
+    const [num, setNum] = useState('');
+
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -44,10 +50,10 @@ export default function PostInitGrades() {
         e.preventDefault();
         try {
             const res = await axios.post(post_validate_url, {
-                "courseId": "3205",
-                "courseName": "ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ",
-                "examPeriod": "2024-2025 Χειμερινή",
-                "numGrades": "102"
+                "courseId": courseId,
+                "courseName": name,
+                "examPeriod": period,
+                "numGrades": num
             },
             {
                 headers: {
@@ -86,16 +92,40 @@ export default function PostInitGrades() {
                 <h2 className='main-container-header'>XLSX file parsing</h2>
                 <form onSubmit={handleValidate}>
                     <div className='label-container'>
-                    <label>Course:</label>
-                    <input type="text" placeholder="Course name"/>
+                        <label>id:</label>
+                        <input
+                        type="text" 
+                        placeholder="Course id"
+                        value={courseId}
+                        onChange={(e)=>{setCourseId(e.target.value)}}
+                        />
+                    </div>
+                    <div className='label-container'>
+                        <label>Course:</label>
+                        <input
+                        type="text" 
+                        placeholder="Course name"
+                        value={name}
+                        onChange={(e)=>{setName(e.target.value)}}
+                        />
                     </div>
                     <div className='label-container'>
                         <label>Period:</label>
-                        <input type="text" placeholder="Exam period"/>
+                        <input
+                        type="text" 
+                        placeholder="Course period"
+                        value={period}
+                        onChange={(e)=>{setPeriod(e.target.value)}}
+                        />
                     </div>
                     <div className='label-container'>
                         <label>n of grades:</label>
-                        <input type="text" placeholder="N"/>
+                        <input
+                        type="text" 
+                        placeholder="N"
+                        value={num}
+                        onChange={(e)=>{setNum(e.target.value)}}
+                        />
                     </div>
                     <button type="submit">CONFIRM</button>
                     <button type="decline">CANCEL</button>
