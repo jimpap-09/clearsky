@@ -3,34 +3,48 @@ import {post_request_url} from '../../apiConfig';
 import axios from 'axios';
 import useAuth from '../../context/AuthContext';
 
+// create review - main page
 export default function ReviewRequest({studentId, course, onBack}) {
 
+    // set a state for the upcoming request
     const [request, setRequest] = useState('');
+    // receive token for authorization
     const {token} = useAuth();
+    const courseId = course?.id;
 
+    // when submit button is clicked
+    // check if the request is empty
+    // post the request to create it
+    // receive backend response
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(!request) {
             alert('Please submit a non empty request!')
             return;
         }
-        try{
+        try {
+            console.log('courseId: ', courseId);
+            console.log('studentId: ', studentId);
+            console.log('studentMessage: ', request);
+
             const res = await axios.post(post_request_url, {
-                courseId: course.id,
-                studentId: studentId,
+                courseId,
+                studentId,
                 studentMessage: request,
             },
             {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            alert('Backend response: ', res.data.message);
+            if(res.status === 203) {
+                alert(res.data.error);
+                return;
+            }
+            alert('Backend response: ', res.headers['x-message']);
             console.log("Posted Request: ", res.data);
         }
-        catch(err) {
-            console.error(err);
-        }
+        catch(err) {console.error(err);}
     }
-    return(
+    return (
         <div>
         {onBack && (
         <button onClick={onBack}>

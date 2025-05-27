@@ -4,6 +4,6 @@
 export const buildPath = (userData, subPath = '') => {
   const role = userData?.role?.toLowerCase();
   const id = userData?.id;
-  if (!role || !id) return '/';
+  if (!userData || !role || !id) return `${subPath}`;
   return `/${role}/${id}${subPath}`;
 };

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import {useState} from 'react';
+import UserDropDown from '../components/ui/UserDropDown';
 
 export default function UserManagement() {
     const options = ['instructor', 'student', 'representative']
@@ -14,7 +14,7 @@ export default function UserManagement() {
             <form>
                 <div className="label-container">
                     <label>type:</label>
-                    <DropDown options={options}/>
+                    <UserDropDown options={options}/>
                 </div>
                 <div className="label-container">
                     <label>Username:</label>
@@ -58,56 +58,12 @@ export default function UserManagement() {
         </div>
         <div className='message-area'>
             <div className='main-container'>
-                <h2>Message area</h2>
+                <h2 className='main-container-header'>Message area</h2>
                 <div className='message-text'>
                     <p>write your message here</p>
                 </div>
             </div>
         </div>
         </>
-    )
-}
-
-function DropDown({options}) {
-
-    const [ open, setOpen ] = useState(false);
-    const toggleDropDown = () => setOpen(!open);
-    const [option, setOption] = useState('Institution representative');
-
-    const handleSelect = async (value) => {
-        setOpen(false);
-        setOption(value);
-    }
-
-    return (
-        <div className='usermngmnt-dropdown'>
-            <button
-                type="button"
-                onClick={toggleDropDown}
-                className={`dropdown-btn ${open ? "active" : ""}`}>
-                {option}
-                {
-                    open ?
-                    <ChevronDown size={15}/>  :                  
-                    <ChevronRight size={15}/>
-                }
-            </button>
-            {
-            open && (
-            <ul className='usermngmnt-dropdown-menu'>
-                {
-                    options.map((opt)=>(
-                        <li
-                            key={opt}
-                            onClick={() => handleSelect(opt)}
-                        >
-                            {opt}
-                        </li>
-                    ))
-                }
-            </ul>
-            )
-            }
-        </div>
     )
 }

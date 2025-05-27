@@ -1,7 +1,24 @@
-// course table
-export default function StudentCourseTable({courses, selectedCourse, onSelect, setView}) {
+import { useState, useEffect } from "react";
+import { fetchStudentCourses } from "../../api/courses";
 
-  if(!courses) return null;
+// course table
+export default function StudentCourseTable({id, selectedCourse, onSelect, setView}) {
+
+  const [courses, setCourses] = useState([]);
+  
+  // fetch all student courses
+  useEffect(() => {
+    const loadCourses = async () => {
+      const data = await fetchStudentCourses(id);
+      setCourses(data);
+      console.log("Courses Fetched: ", data);
+    };
+    if(id) loadCourses();
+  }, [id]);
+
+  if(!courses) return (
+    <h1 style={{display:'flex', justifyContent:'center'}}> You are not assigned to courses!</h1>
+  );
 
   console.log("Student Course Table: Student Courses: ", courses);
   console.log("Student Course Table: selectedCourse's id: ", selectedCourse?.id);
@@ -46,14 +63,14 @@ export default function StudentCourseTable({courses, selectedCourse, onSelect, s
                 <button
                   className='main-button'
                   onClick={()=>{setView('review'); console.log('currentView = review')}}
-                  // disabled={!course.status || course.status !== 'open'}
+                  disabled={!course.status || course.status !== 'open'}
                 >
                   Ask for Review
                 </button>
                 <button
                   className='main-button'
                   onClick={()=>{setView('status'); console.log('currentView = status')}}
-                  // disabled={!course.status || course.status === 'open'}
+                  disabled={!course.status || course.status === 'open'}
                 >
                   View Review Status
                 </button>

@@ -14,7 +14,7 @@ const Course = sequelize.define('Course', {
     },
     period: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     status: {
         type: DataTypes.ENUM('open', 'closed'),

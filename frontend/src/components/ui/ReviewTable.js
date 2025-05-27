@@ -1,10 +1,29 @@
-// course table
-export default function ReviewTable({reviews, selectedReview, onSelect, setView}) {
+import {useState, useEffect} from 'react'
+import { fetchInstructorReviewRequests } from '../../api/reviews';
 
-  if(!reviews) return null;
+// review table
+export default function ReviewTable({id, token, selectedReview, onSelect, setView}) {
 
-  console.log("Instructor Review Table: Instructor Reviews: ", reviews);
-  console.log("Instructor Review Table: selectedReview's id: ", selectedReview?.id);
+  const [reviews, setReviews] = useState([]);
+  console.log('token: ', token);
+  // fetch all student courses
+  useEffect(() => {
+    const loadReviews = async () => {
+      const data = await fetchInstructorReviewRequests(id, token);
+      setReviews(data);
+      console.log("Reviews Fetched: ", data);
+    };
+    if(id) loadReviews();
+  }, [id, token]);
+
+  if(!reviews) return (
+    <h2>
+      No Reviews!
+    </h2>
+  );
+
+  console.log("Reviews: ", reviews);
+  console.log("selectedReview's id: ", selectedReview?.id);
 
   return (
     <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>
@@ -18,7 +37,9 @@ export default function ReviewTable({reviews, selectedReview, onSelect, setView}
       </thead>
       <tbody>
         {reviews.map((review, index) => {
+          console.log('review: ', review);
           const isSelected = selectedReview === review;
+          const request = review.request;
           return (
             <tr
             key={index}
@@ -31,11 +52,10 @@ export default function ReviewTable({reviews, selectedReview, onSelect, setView}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e6f0ff')}
             onMouseLeave={(e) =>
               (e.currentTarget.style.backgroundColor = isSelected ? '#cce5ff' : '')
-            }
-            >
-              <td>{review.name}</td>
-              <td>{review.period}</td>
-              <td>{review.student}</td>
+            }>
+              <td>{request.course}</td>
+              <td>{request.period}</td>
+              <td>{request.student}</td>
               <td>
                 <button
                   onClick={()=>{setView('reply'); console.log('currentView = reply')}}

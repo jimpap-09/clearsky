@@ -114,7 +114,11 @@ export default function SignUp() {
                         </div>
                         <div className="label-container">
                             <label>Role:</label>
-                            <select value={role} onChange={(e) => setRole(e.target.value)}>
+                            <select
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                            style={{padding: '10px', borderRadius: '10px', cursor: 'pointer'}}
+                            >
                                 <option value="STUDENT">Student</option>
                                 <option value="INSTRUCTOR">Instructor</option>
                                 <option value="ADMIN">Admin</option>

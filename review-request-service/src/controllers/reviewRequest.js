@@ -1,17 +1,33 @@
 // controllers/gradeReviewController.js
 const ReviewRequest = require('../models/reviewRequest');
+const axios = require('axios');
 
 exports.createReviewRequest = async (req, res) => {
   const { courseId, studentId, studentMessage } = req.body;
 
   try {
+
+    console.log('backend params');
+    console.log('courseId: ', courseId);
+    console.log('studentId: ', studentId);
+    console.log('studentMessage: ', studentMessage);
+
+    const existing = await ReviewRequest.findOne({ where: { courseId, studentId } });
+
+    if (existing) {
+      console.log('Backend error: You have alr posted a review request fot that course.');
+      return res.status(203).json({ error: 'You have already posted a review request fot that course.' });
+    }
+
     const review = await ReviewRequest.create({
       courseId,
       studentId,
       studentMessage
     });
 
-    res.status(201).json(review);
+    res.set('X-Message', 'Review request created successfully.');
+    res.status(201).json(review); // μόνο τα δεδομένα
+  
   } catch (err) {
     console.error('Create review error:', err.message);
     res.status(500).json({ error: 'Failed to create grade review request' });
@@ -38,7 +54,8 @@ exports.respondToReviewRequest = async (req, res) => {
       request.professorReply = professorReply;
       request.status = status;
       await request.save();
-  
+
+      res.set('X-Message', 'Reply created successfully.');
       res.status(200).json(request);
   } catch (err) {
     console.error('Reply error:', err.message);
@@ -90,5 +107,49 @@ exports.getCourseReviewRequests = async (req, res) => {
   } catch (err) {
     console.error('Fetch course review requests error:', err.message);
     res.status(500).json({ error: 'Failed to retrieve review requests' });
+  }
+}
+
+// get all requests by instructor
+exports.getInstructorReviews = async (req, res) => {
+  const {instructorId} = req.params;
+  try {
+    const {data: instructorCourses} = await axios.get(`http://localhost:4004/getInstructorCourses/${instructorId}`);
+    const courseIds = instructorCourses.map(c=>c.id);
+
+    console.log('Instructor-Reviews-courseIds: ', courseIds);
+
+    const requests = await ReviewRequest.findAll({
+      where: {courseId: courseIds}},
+    );
+    
+    const studentIds = [...new Set(requests.map(r => r.studentId))];
+
+    const {data: users} = await axios.get(`http://localhost:5000/getUsersByIds/${studentIds}`);
+    console.log('Instructor-Reviews-users: ', users);
+    const result = requests.map(req => {
+      const user = users.find(u => u.id == req.studentId);
+      const course = instructorCourses.find(c => c.id == req.courseId);
+      const request = {
+        id: req.id,
+        courseId: req.courseId,
+        studentId: req.studentId,
+        student: user?.name || '',
+        course: course?.title || '',
+        period: course?.period,
+        studentMessage: req.studentMessage,
+        professorMessage: req.professorMessage,
+      }
+      console.log('Instructor-Reviews-request: ', request);
+      return {
+        request
+      }
+    });
+
+  res.status(200).json(result);
+
+  } catch(err) {
+    console.error(err);
+    res.status(500).json({message: "Error fetching review requests"});
   }
 }

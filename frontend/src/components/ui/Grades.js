@@ -1,28 +1,28 @@
 import {useEffect, useState} from 'react';
-import { fetchCourseData, fetchStudentGrades } from '../../api/coursesStats';
+import { fetchCourseData, fetchStudentGrades } from '../../api/stats';
 import GradesBox from './GradesBox';
 import StatsCards from './StatsCards';
 
 // show personal grades - main page
-export default function PersonalGrades({studentId, course, onBack, personal}) {
+export default function Grades({userId, course, onBack, personal}) {
 
     const courseId = course?.id;
     const [grades, setGrades] = useState(null);
     const [courseStats, setCourseStats] = useState(null);
     const [questionStats, setQuestionStats] = useState(null);
 
-    console.log('Personal Grades: studentId = ', studentId);
-    console.log('Personal Grades: courseId = ', courseId);
+    console.log('Grades: userId = ', userId);
+    console.log('Grades: courseId = ', courseId);
 
     // fetch student grades for the selected course
     useEffect(() => {
         const loadGrades = async () => {
-            const data = await fetchStudentGrades(studentId, courseId);
+            const data = await fetchStudentGrades(userId, courseId);
             console.log("Grades Fetched: ", data);
             setGrades(data);
         };
-        if(studentId && courseId) loadGrades();
-    }, [courseId, studentId]);
+        if(userId && courseId && personal) loadGrades();
+    }, [courseId, userId, personal]);
 
     // fetch total distribution and average per qeustion for the selected course
     useEffect(() => {
@@ -36,16 +36,16 @@ export default function PersonalGrades({studentId, course, onBack, personal}) {
 
     return (
         <div style={{ fontFamily: 'Arial' }}>
-        {onBack && grades && (
-        <button onClick={onBack}>
-            Back
-        </button>
-        )}
+            {onBack && (
+            <button onClick={onBack}>
+                Back
+            </button>
+            )}
             <div style={{display: 'flex', gap: '10px', justifyContent: 'flex-start'}}>
                 <div>
                 {course && grades && personal && (
                 <GradesBox 
-                    course={course} 
+                    course={course}
                     grades={{ total: grades.totalGrade, ...grades.perQuestion }} />
                 )}
                 </div>
