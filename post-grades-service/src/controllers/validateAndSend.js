@@ -76,6 +76,8 @@ exports.validateAndSend = async (req, res) => {
             }
         });
 
+        console.log(`User data is: ${req.user}`);
+
         // 🧹 Cleanup
         fs.unlinkSync(filePath);
 

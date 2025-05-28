@@ -26,7 +26,13 @@ const ReviewRequest = sequelize.define('ReviewRequest', {
   }
 }, {
   tableName: 'review_requests',
-  timestamps: true
+  timestamps: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['courseId', 'studentId']
+    }
+  ]
 });
 
 module.exports = ReviewRequest;

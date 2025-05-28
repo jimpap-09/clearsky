@@ -19,9 +19,7 @@ export default function ReviewStatus({studentId, course, onBack}) {
                 alert('Backend response: ' + res.data.message);
                 console.log("Posted Request: ", res.data);
                 setRequest(res.data.professorReply);
-                if (!res.data.professorReply) {
-                    alert('You have no reply!');
-                }
+                if (!res.data.professorReply) alert('You have no reply!');
             } catch (err) {
                 console.error(err);
             }
@@ -29,7 +27,7 @@ export default function ReviewStatus({studentId, course, onBack}) {
         if(studentId && courseId && token) load_review();
     }
     ,[studentId, courseId, token]
-)
+    )
 
     const handleSubmit = async (e) => {
         alert('You submitted');
@@ -43,7 +41,7 @@ export default function ReviewStatus({studentId, course, onBack}) {
         </button>
         )}
         <div className='main-container'>
-            <h4 className='main-container-header'>REVIEW REQUEST STATUS {course.name}-{course.period}</h4>
+            <h4 className='main-container-header'>REVIEW REQUEST STATUS {course.title}-{course.period}</h4>
             <div className='main-container-body'>
                 <h5>Message FROM instructor</h5>
                 <input

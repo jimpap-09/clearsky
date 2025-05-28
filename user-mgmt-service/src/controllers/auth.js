@@ -48,3 +48,33 @@ exports.login = async (req, res) => {
         res.status(500).json({ error: 'Login failed' });
     }
 };
+
+exports.getUsers = async (req, res) => {
+    try {
+        const result = await User.findAll({attributes: ['id', 'email', 'name']});
+        res.status(200).json(result);
+    } catch(err) {
+        res.status(500).json({error: 'Failed to fetch user'});
+    }
+}
+
+exports.getUsersByIds = async (req, res) => {
+    try {
+        const userIds = req.params.ids.split(',');
+        const userData = await User.findAll({
+            where: { id: userIds },
+            attributes: ['id', 'name']
+        });
+
+        if (!userData || userData.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Στέλνεις όλο το array με τους χρήστες
+        res.status(200).json(userData);
+
+    } catch(err) {
+        console.error('Error fetching user:', err.message);
+        res.status(500).json({ error: 'Failed to fetch user' });
+    }
+}

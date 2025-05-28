@@ -34,7 +34,7 @@ the footer (bottom of the page)
     width: 100%;
     display: flex;
     justify-content: space-between;
-    background-color: #333;
+    background-color: #293d5f;
     padding: 0 1rem;
   }
 
@@ -80,8 +80,9 @@ the footer (bottom of the page)
 
   /* give bc when hover to navbar links */
   .navbar a:hover {
-    background-color: #777;
+    background-color: #6e9c92;
   }
+
 
   /*
     login = link
@@ -146,7 +147,7 @@ the footer (bottom of the page)
     height: 100%;
     width: 100%;
     border-style: none;
-    background-color: #333;
+    background-color: #293d5f;
     color: white;
     display: flex;
     align-items: center;
@@ -159,8 +160,9 @@ the footer (bottom of the page)
     same as links hover color
   */
   .dropdown-btn:hover {
-    background-color: #777;
+    background-color: #6e9c92;
   }
+ 
 
   /*
     position = absolute so dropdown-menu
@@ -179,7 +181,7 @@ the footer (bottom of the page)
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #555;
+    background-color: #293d5f;
     color: white;
     z-index: 1000;
   }
@@ -200,7 +202,7 @@ the footer (bottom of the page)
 
   /* give same bc hover */
   .dropdown-menu li:hover {
-    background-color: #777;
+    background-color: #6e9c92;
   }
 
   .usermngmnt-dropdown-menu {
@@ -240,12 +242,12 @@ the footer (bottom of the page)
     eg. home link is active when we are in home page
   */
   .active {
-    background-color: #555;
+    background-color: #3B82F6;
   }
 
   /*
     remove margin and padding
-    and align header and  text to the center of the page
+    and align header and text to the center of the page
   */
   .body-container {
     margin: 0;
@@ -268,7 +270,7 @@ the footer (bottom of the page)
     padding: 5px 10px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-    background-color: #DCDCDC;
+    background-color: lab(72.13% -14.69 -28.46);
   }
 
   .main-container-body {

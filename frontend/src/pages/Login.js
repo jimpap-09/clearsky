@@ -21,6 +21,7 @@ export default function Login() {
         try {
             const res = await axios.post(get_login_url, { email, password });
             const { token } = res.data;
+            console.log('token from login: ', token);
             await login(token);
         } catch (error) {
             alert("Login failed. Please check your credentials");
@@ -40,10 +41,14 @@ export default function Login() {
             <div className="main-container">
                 <h2 className='main-container-header'>Please enter your credentials</h2>
                 <div className='main-container-body'>
-                    <form onSubmit={handleSubmit}>
+                    <form
+                        onSubmit={handleSubmit}
+                        className='login-form'
+                    >
                         <div className="label-container">
-                            <label>Email:</label>
+                            <label className='login-label'>Email:</label>
                             <input
+                                className='login-input'
                                 type="text"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -51,8 +56,9 @@ export default function Login() {
                             />
                         </div>
                         <div className="label-container">
-                            <label>Password:</label>
+                            <label className='login-label'>Password:</label>
                             <input
+                                className='login-input'
                                 type="text"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -60,12 +66,18 @@ export default function Login() {
                             />
                         </div>
                         <div className='submit-btn'>
-                            <button type="submit">
+                            <button
+                                className='main-button'
+                                type="submit"
+                            >
                                 Login
                             </button>
-                            <button type="button"
-                                    style = {{margin: "0 0 0 1rem"}}
-                                    onClick={(e) => navigate('/sign-up')}>
+                            <button
+                                className='main-button'
+                                type="button"
+                                style = {{margin: "0 0 0 1rem"}}
+                                onClick={(e) => navigate('/sign-up')}
+                            >
                                 Register
                             </button>
                         </div>

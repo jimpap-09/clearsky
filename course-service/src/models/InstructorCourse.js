@@ -7,7 +7,7 @@ const InstructorCourse = sequelize.define('InstructorCourse', {
     allowNull: false
   },
   courseId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false
   }
 }, {

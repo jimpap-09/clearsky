@@ -22,7 +22,7 @@ const User = sequelize.define('User', {
     },
     name: {
     type: DataTypes.STRING,
-    allowNull: true // ή false, αν είναι υποχρεωτικό
+    allowNull: true
     }
 }, {
     tableName: 'users',

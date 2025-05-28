@@ -26,7 +26,7 @@ export default function Navbar() {
       <ul>
         <li><CustomLink to={buildPath(userData, "/profile")}>Home</CustomLink></li>
         <li><CustomLink to={buildPath(userData, "/my-courses")}>Courses</CustomLink></li>
-        <li><CustomLink to={buildPath(userData, "/grades")}>Grades</CustomLink></li>
+        <li><CustomLink to={buildPath(userData, "/stats")}>Statistics</CustomLink></li>
       </ul>
       {
         userData && userData.role
