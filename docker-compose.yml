@@ -1,0 +1,155 @@
+version: '3.8'
+
+services:
+  # Event Bus Service
+  event-bus:
+    build: ./event-bus
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4005/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "4005:4005"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres 
+      - DB_PORT=5432
+      - DB_NAME=event_db
+      - DB_USER=postgres
+      - DB_PASSWORD=pass
+    networks:
+      - microservice-net
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  user-mgmt-service:
+    build: ./user-mgmt-service
+    environment:
+      - EVENT_BUS_URL=http://event-bus:4005
+      - NODE_ENV=development
+      - DB_HOST=postgres 
+      - DB_PORT=5432
+      - DB_NAME=user_db
+      - DB_USER=postgres
+      - DB_PASSWORD=pass
+    networks:
+      - microservice-net
+    depends_on:
+      postgres:
+        condition: service_healthy
+      event-bus:
+        condition: service_started
+
+
+  review-request-service:
+    build: ./review-request-service
+    environment:
+      - EVENT_BUS_URL=http://event-bus:4005
+      - NODE_ENV=development
+      - DB_HOST=postgres 
+      - DB_PORT=5432
+      - DB_NAME=review_db
+      - DB_USER=postgres
+      - DB_PASSWORD=pass
+    networks:
+      - microservice-net
+    depends_on:
+      event-bus:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+
+  post-grades-service:
+    build: ./post-grades-service
+    environment:
+      - EVENT_BUS_URL=http://event-bus:4005
+      - NODE_ENV=development
+      - DB_HOST=postgres 
+      - DB_PORT=5432
+      - DB_NAME=grades_db
+      - DB_USER=postgres
+      - DB_PASSWORD=pass
+    networks:
+      - microservice-net
+    depends_on:
+      event-bus:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+  
+  course-service:
+    build: ./course-service
+    environment:
+      - EVENT_BUS_URL=http://event-bus:4005
+      - NODE_ENV=development
+      - DB_HOST=postgres 
+      - DB_PORT=5432
+      - DB_NAME=course_db
+      - DB_USER=postgres
+      - DB_PASSWORD=pass
+    networks:
+      - microservice-net
+    depends_on:
+      event-bus: 
+        condition: service_started
+      postgres:
+        condition: service_healthy
+
+  analytics-service:
+    build: ./analytics-service
+    environment:
+      - EVENT_BUS_URL=http://event-bus:4005
+      - NODE_ENV=development
+      - DB_HOST=postgres 
+      - DB_PORT=5432
+      - DB_NAME=analytics_db
+      - DB_USER=postgres
+      - DB_PASSWORD=pass
+    networks:
+      - microservice-net
+    depends_on:
+      event-bus:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+
+  # Frontend Service
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - EVENT_BUS_URL=http://event-bus:4005
+    networks:
+      - microservice-net
+    depends_on:
+      - event-bus
+
+  # PostgreSQL (shared)
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_MULTIPLE_DATABASES=event_db,user_db,review_db,grades_db,course_db,analytics_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    ports:
+      - "5433:5432"
+    networks:
+      - microservice-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s  
+      timeout: 5s
+      retries: 5
+
+networks:
+  microservice-net:
+    driver: bridge
+
+volumes:
+  postgres_data:

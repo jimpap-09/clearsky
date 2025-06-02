@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/', postGradesRoutes);
 
-const PORT = process.env.PORT;
+const PORT = 4001;
 
 const uploadDir = path.join(process.cwd(), 'uploads');
 if (!fs.existsSync(uploadDir)) {

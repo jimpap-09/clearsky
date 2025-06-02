@@ -14,13 +14,14 @@ app.use('/', eventsRoutes);
 
 const PORT = 4005;
 
-app.listen(PORT, async () => {
-  try {
-    await sequelize.authenticate();
-    await sequelize.sync();
-    console.log('📦 DB connected & synced');
-    console.log(`🚀 Event Bus running on port ${PORT}`);
-  } catch (err) {
-    console.error('❌ Failed to start server:', err.message);
-  }
-});
+sequelize.sync() // or force: true during dev
+  .then(() => {
+    console.log('Database connected and synced');
+    app.listen(PORT, () => {
+      console.log(`event bus running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('DB connection failed:', err);
+  });
+

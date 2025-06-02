@@ -10,9 +10,9 @@ app.use(cors());
 app.use(express.json());
 app.use('/', authRoutes);
 
-const PORT = process.env.PORT;
+const PORT = 5000;
 
-sequelize.sync({ alter: true }) // or force: true during dev
+sequelize.sync() // or force: true during dev
   .then(() => {
     console.log('Database connected and synced');
     app.listen(PORT, () => {

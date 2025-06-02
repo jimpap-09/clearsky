@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/', reviewRequestRoutes);
 
-const PORT = process.env.PORT;
+const PORT = 4003;
 
 sequelize.sync({ alter: true }) // or force: true during dev
   .then(() => {
