@@ -66,7 +66,7 @@ export default function SignUp() {
         }
         catch (error) {
             alert("Register failed. Please check your credentials");
-            console.error('Registration error:', error.response?.data);        }
+            console.log('Registration error:', error.response?.data);        }
     };
 
     return (
