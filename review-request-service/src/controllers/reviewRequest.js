@@ -22,7 +22,7 @@ exports.createReviewRequest = async (req, res) => {
 
     console.log('A new review has been created!');
 
-    const putResponse = await axios.put(`http://localhost:4004/putCourseReview/${studentId}/${courseId}`, {status: true});
+    const putResponse = await axios.put(`http://course-service:4004/putCourseReview/${studentId}/${courseId}`, {status: true});
     console.log('PutCourseReview response:', putResponse.data);
 
     res.set('X-Message', 'Review request created successfully.');
@@ -55,7 +55,7 @@ exports.respondToReviewRequest = async (req, res) => {
     request.status = status;
     await request.save();
 
-    const putResponse = await axios.put(`http://localhost:4004/putCourseReply/${studentId}/${courseId}`, {status: true});
+    const putResponse = await axios.put(`http://course-service:4004/putCourseReply/${studentId}/${courseId}`, {status: true});
     console.log('PutCourseReply response:', putResponse.data);
 
     res.set('X-Message', 'Reply created successfully.');
@@ -118,7 +118,7 @@ exports.getInstructorReviews = async (req, res) => {
   const {instructorId} = req.params;
 
   try {
-    const {data: instructorCourses} = await axios.get(`http://localhost:4004/getInstructorCourses/${instructorId}`);
+    const {data: instructorCourses} = await axios.get(`http://course-service:4004/getInstructorCourses/${instructorId}`);
     const courseIds = instructorCourses.map(c=>c.id);
 
     console.log('Instructor-Reviews-courseIds: ', courseIds);
@@ -129,7 +129,7 @@ exports.getInstructorReviews = async (req, res) => {
     
     const studentIds = [...new Set(requests.map(r => r.studentId))];
 
-    const {data: users} = await axios.get(`http://localhost:5000/getUsersByIds/${studentIds}`);
+    const {data: users} = await axios.get(`http://user-mgmt-service:5000/getUsersByIds/${studentIds}`);
     console.log('Instructor-Reviews-users: ', users);
     const result = requests.map(req => {
       const user = users.find(u => u.id == req.studentId);
@@ -164,7 +164,7 @@ exports.getInstructorPendingReviews = async (req, res) => {
   const {instructorId} = req.params;
 
   try {
-    const {data: instructorCourses} = await axios.get(`http://localhost:4004/getInstructorCourses/${instructorId}`);
+    const {data: instructorCourses} = await axios.get(`http://course-service:4004/getInstructorCourses/${instructorId}`);
     const courseIds = instructorCourses.map(c=>c.id);
 
     console.log('Instructor-Reviews-courseIds: ', courseIds);
@@ -175,7 +175,7 @@ exports.getInstructorPendingReviews = async (req, res) => {
     
     const studentIds = [...new Set(requests.map(r => r.studentId))];
 
-    const {data: users} = await axios.get(`http://localhost:5000/getUsersByIds/${studentIds}`);
+    const {data: users} = await axios.get(`http://user-mgmt-service:5000/getUsersByIds/${studentIds}`);
     console.log('Instructor-Reviews-users: ', users);
     const result = requests.map(req => {
       const user = users.find(u => u.id == req.studentId);

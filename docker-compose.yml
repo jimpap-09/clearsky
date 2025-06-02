@@ -4,15 +4,11 @@ services:
   # Event Bus Service
   event-bus:
     build: ./event-bus
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4005/health || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
     ports:
       - "4005:4005"
     environment:
       - NODE_ENV=development
+      - JWT_SECRET=secret
       - DB_HOST=postgres 
       - DB_PORT=5432
       - DB_NAME=event_db
@@ -26,8 +22,11 @@ services:
 
   user-mgmt-service:
     build: ./user-mgmt-service
+    ports:
+      - "5000:5000"
     environment:
       - EVENT_BUS_URL=http://event-bus:4005
+      - JWT_SECRET=secret
       - NODE_ENV=development
       - DB_HOST=postgres 
       - DB_PORT=5432
@@ -45,8 +44,11 @@ services:
 
   review-request-service:
     build: ./review-request-service
+    ports: 
+      - "4003:4003"
     environment:
       - EVENT_BUS_URL=http://event-bus:4005
+      - JWT_SECRET=secret
       - NODE_ENV=development
       - DB_HOST=postgres 
       - DB_PORT=5432
@@ -63,8 +65,11 @@ services:
 
   post-grades-service:
     build: ./post-grades-service
+    ports:
+      - "4001:4001"
     environment:
       - EVENT_BUS_URL=http://event-bus:4005
+      - JWT_SECRET=secret
       - NODE_ENV=development
       - DB_HOST=postgres 
       - DB_PORT=5432
@@ -81,8 +86,11 @@ services:
   
   course-service:
     build: ./course-service
+    ports:
+      - "4004:4004"
     environment:
       - EVENT_BUS_URL=http://event-bus:4005
+      - JWT_SECRET=secret
       - NODE_ENV=development
       - DB_HOST=postgres 
       - DB_PORT=5432
@@ -99,8 +107,11 @@ services:
 
   analytics-service:
     build: ./analytics-service
+    ports:
+      - "4002:4002"
     environment:
       - EVENT_BUS_URL=http://event-bus:4005
+      - JWT_SECRET=secret
       - NODE_ENV=development
       - DB_HOST=postgres 
       - DB_PORT=5432

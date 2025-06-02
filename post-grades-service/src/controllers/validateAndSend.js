@@ -69,7 +69,7 @@ exports.validateAndSend = async (req, res) => {
         }
         
         // 🚀 Send to Event Bus
-        await axios.post('http://localhost:4005/events', {
+        await axios.post('http://event-bus:4005/events', {
             type: eventType,
             data: {
                 instructorId: req.user.id,
