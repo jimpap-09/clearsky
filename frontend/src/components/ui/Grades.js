@@ -37,7 +37,7 @@ export default function Grades({userId, course, onBack, personal}) {
     return (
         <div style={{ fontFamily: 'Arial' }}>
             {onBack && (
-            <button onClick={onBack}>
+            <button className='main-button' onClick={onBack}>
                 Back
             </button>
             )}

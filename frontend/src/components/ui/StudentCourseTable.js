@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchStudentCourses } from "../../api/courses";
 
 // course table
-export default function StudentCourseTable({id, selectedCourse, onSelect, setView}) {
+export default function StudentCourseTable({id, selectedCourse, onSelect, setView, refreshTrigger}) {
 
   const [courses, setCourses] = useState([]);
   
@@ -11,17 +11,16 @@ export default function StudentCourseTable({id, selectedCourse, onSelect, setVie
     const loadCourses = async () => {
       const data = await fetchStudentCourses(id);
       setCourses(data);
-      console.log("Courses Fetched: ", data);
     };
     if(id) loadCourses();
-  }, [id]);
+  }, [id, refreshTrigger]);
 
   if(!courses) return (
     <h1 style={{display:'flex', justifyContent:'center'}}> You are not assigned to courses!</h1>
   );
 
-  console.log("Student Course Table: Student Courses: ", courses);
-  console.log("Student Course Table: selectedCourse's id: ", selectedCourse?.id);
+  console.log("Student Courses: ", courses);
+  console.log("selectedCourse's id: ", selectedCourse?.id);
 
   return (
     <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>
@@ -36,6 +35,10 @@ export default function StudentCourseTable({id, selectedCourse, onSelect, setVie
       <tbody>
         {courses.map((course, index) => {
           const isSelected = selectedCourse === course;
+          const hasBeenReviewed = course.hasBeenReviewed === true;
+          const hasBeenReplied = course.hasBeenReplied === true;
+          console.log('course-hasbeenreviewed: ', course.hasBeenReviewed);
+          console.log('course-hasbeenreplied: ', course.hasBeenReplied);
           return (
             <tr
             key={index}
@@ -50,12 +53,13 @@ export default function StudentCourseTable({id, selectedCourse, onSelect, setVie
               (e.currentTarget.style.backgroundColor = isSelected ? '#cce5ff' : '')
             }
             >
-              {console.log("Course: ", course.name, " has status: ", course.status)}
+
               <td>{course.name}</td>
               <td>{course.period}</td>
               <td>{course.status}</td>
               <td style={{ display: 'flex', justifyContent: 'space-around',}}>
                 <button
+                  className="main-button"
                   onClick={()=>{setView('grades'); console.log('currentView = grades')}}
                 >
                   View My Grades
@@ -63,14 +67,14 @@ export default function StudentCourseTable({id, selectedCourse, onSelect, setVie
                 <button
                   className='main-button'
                   onClick={()=>{setView('review'); console.log('currentView = review')}}
-                  disabled={!course.status || course.status !== 'open'}
+                  disabled={!course.status || course.status !== 'open' || hasBeenReviewed}
                 >
                   Ask for Review
                 </button>
                 <button
                   className='main-button'
                   onClick={()=>{setView('status'); console.log('currentView = status')}}
-                  disabled={!course.status || course.status === 'open'}
+                  disabled={!course.status || !hasBeenReplied}
                 >
                   View Review Status
                 </button>

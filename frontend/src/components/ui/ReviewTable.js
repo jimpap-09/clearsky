@@ -1,22 +1,22 @@
 import {useState, useEffect} from 'react'
-import { fetchInstructorReviewRequests } from '../../api/reviews';
+// import { fetchInstructorReviewRequests } from '../../api/reviews';
+import { fetchInstructorPendingReviewRequests } from '../../api/reviews';
 
 // review table
 export default function ReviewTable({id, token, selectedReview, onSelect, setView}) {
 
   const [reviews, setReviews] = useState([]);
-  console.log('token: ', token);
   // fetch all student courses
   useEffect(() => {
     const loadReviews = async () => {
-      const data = await fetchInstructorReviewRequests(id, token);
+      // const data = await fetchInstructorReviewRequests(id, token);
+      const data = await fetchInstructorPendingReviewRequests(id, token);
       setReviews(data);
-      console.log("Reviews Fetched: ", data);
     };
     if(id) loadReviews();
   }, [id, token]);
 
-  if(!reviews) return (
+  if(!reviews || reviews.length === 0) return (
     <h2>
       No Reviews!
     </h2>
@@ -58,6 +58,7 @@ export default function ReviewTable({id, token, selectedReview, onSelect, setVie
               <td>{request.student}</td>
               <td>
                 <button
+                  className='main-button'
                   onClick={()=>{setView('reply'); console.log('currentView = reply')}}
                 >
                   Reply

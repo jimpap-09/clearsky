@@ -26,8 +26,9 @@ export default function GradesBox({ course, grades }) {
           key={label} 
           style={{ marginBottom: '10px' }}
         >
-          <label style={{ display: 'block', marginBottom: '4px' }}>{label}</label>
+          <label className='main-label' style={{ display: 'block', marginBottom: '4px' }}>{label}</label>
           <input
+            className="main-input"
             type="text"
             value={val ?? ''}
             readOnly

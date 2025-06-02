@@ -16,8 +16,9 @@ function parseCourseMetadata(headerText) {
 }
 
 exports.validateAndSend = async (req, res) => {
+    console.log("VALIDATION ROUTE HIT");
     try {
-        const { courseId, courseName, examPeriod, numGrades } = req.body;
+        const { courseId, courseName, examPeriod, numGrades, isFinalised } = req.body;
         const uploadsDir = path.join(process.cwd(), 'uploads');
 
         // 🔍 Find file that includes the courseId
@@ -28,7 +29,7 @@ exports.validateAndSend = async (req, res) => {
         const filePath = path.join(uploadsDir, fileName);
 
         // 🧠 Determine grade type from filename
-        const isFinal = fileName.startsWith('final_');
+        const isFinal = isFinalised;
         const eventType = isFinal ? 'FINAL_GRADES' : 'INITIAL_GRADES';
 
         // 📄 Parse the file

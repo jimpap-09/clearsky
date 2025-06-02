@@ -10,5 +10,6 @@ router.post('/events', events.handleEvent);
 router.get('/getStudentCourses/:studentId', courseController.getCoursesByStudent);
 router.get('/getInstructorCourses/:instructorId', courseController.getCoursesByInstructor);
 router.get('/getAllCourses', courseController.getAllCourses);
-
+router.put('/putCourseReview/:studentId/:courseId', courseController.putCourseReview);
+router.put('/putCourseReply/:studentId/:courseId', courseController.putCourseReply);
 module.exports = router;

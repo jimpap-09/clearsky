@@ -4,7 +4,7 @@ import ReviewStatus from "./ReviewStatus";
 import Reply from "./Reply";
 
 // RenderContext - main page
-export default function RenderContent({id, selectedItem, setSelectedItem, setCurrentView, currentView, personal}) {
+export default function RenderContent({id, selectedItem, setSelectedItem, setCurrentView, currentView, personal, setRefreshTrigger}) {
 
   // func to unrender the content and show only the table
   // so we set currentView and selectedCourse to empty
@@ -35,6 +35,7 @@ export default function RenderContent({id, selectedItem, setSelectedItem, setCur
             studentId={id}
             course={selectedItem}
             onBack={back}
+            setRefreshTrigger={setRefreshTrigger}
           />
         );
 

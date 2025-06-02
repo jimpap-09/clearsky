@@ -36,6 +36,8 @@ export const fetchStudentCourses = async (id) => {
       status: course.status,
       initial: course.createdAt?.split("T")[0] || "-",
       final: course.updatedAt?.split("T")[0] || "-",
+      hasBeenReviewed: course.hasReview,
+      hasBeenReplied: course.hasReply,
     }));
     return courses;
   }

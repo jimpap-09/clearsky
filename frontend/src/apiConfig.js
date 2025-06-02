@@ -19,6 +19,7 @@ export const put_request_url = 'http://localhost:4003/replyToReviewRequest'
 export const get_all_reviews_requests_url = 'http://localhost:4003/getAllReviewRequests'
 export const get_review_request_url = 'http://localhost:4003/getReviewRequest'
 export const get_instructor_review_request_url = 'http://localhost:4003/getReviewRequestsByInstructor'
+export const get_instructor_pending_review_request_url = 'http://localhost:4003/getPendingReviewRequestsByInstructor'
 
 // user management routes
 export const post_register_url = 'http://localhost:5000/register'

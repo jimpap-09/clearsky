@@ -9,6 +9,14 @@ const StudentCourse = sequelize.define('StudentCourse', {
   courseId: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  hasReview: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  hasReply: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 }, {
   timestamps: false

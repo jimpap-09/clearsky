@@ -9,7 +9,6 @@ router.post('/createReviewRequest',
     auth,
     requireRole('STUDENT'),
     reviewRequestController.createReviewRequest
-
 );
 
 // Reply to a review request
@@ -35,6 +34,12 @@ router.get('/getReviewRequest/:courseId/:studentId',
 router.get('/getReviewRequestsByInstructor/:instructorId',
     auth,
     reviewRequestController.getInstructorReviews
+);
+
+// Get pending review request by instructor
+router.get('/getPendingReviewRequestsByInstructor/:instructorId',
+    auth,
+    reviewRequestController.getInstructorPendingReviews
 );
 
 module.exports = router;

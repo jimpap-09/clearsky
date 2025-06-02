@@ -14,7 +14,7 @@ export default function UserManagement() {
             <form>
                 <div className="label-container">
                     <label>type:</label>
-                    <UserDropDown options={options}/>
+                    <UserDropDown options={options} start={'institution representative'}/>
                 </div>
                 <div className="label-container">
                     <label>Username:</label>
