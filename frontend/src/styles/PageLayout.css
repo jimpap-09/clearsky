@@ -130,6 +130,7 @@ the footer (bottom of the page)
     flex-direction: column;
     align-items: center;
     width: 200px;
+    height: 30px;
   }
 
   /*
@@ -153,6 +154,7 @@ the footer (bottom of the page)
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    border-radius: 8px;
   }
 
   /*
@@ -215,7 +217,7 @@ the footer (bottom of the page)
     list-style: none;
     display: flex;
     flex-direction: column;
-    background-color: #555;
+    background-color: #293d5f;
     color: white;
     z-index: 1000;
   }
@@ -229,7 +231,7 @@ the footer (bottom of the page)
   }
 
   .usermngmnt-dropdown-menu li:hover {
-    background-color: #777;
+    background-color: #6e9c92;
   }
 
   .usermngmnt-btn-container {
@@ -280,13 +282,15 @@ the footer (bottom of the page)
   .main-container-label {
     width: 200px;
   }
-  
+
   .message-area {
-    margin-top: 1rem;
+    min-height: 100px;
   }
 
-  .message-text {
+  .message-input {
+    width: 100%;
     padding: 10px;
+    border-radius: 8px;
   }
 
   .main-button {
@@ -316,4 +320,32 @@ the footer (bottom of the page)
     grid-auto-columns: min-content;
     gap: 10px;
     align-items: start;
+  }
+
+  .main-form {
+    width: 50%;
+    padding: 10px;
+}
+
+  .label-container {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      align-items: center;
+      margin: 1.5rem 0;
+      gap: 2rem;
+  }
+
+  .main-label {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      width: 100px;
+  }
+
+  .main-input {
+      flex-grow: 1;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
   }

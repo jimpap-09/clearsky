@@ -18,15 +18,14 @@ export default function MyCourses() {
   // currentView to choose what the rest of the page is
   const [selectedItem, setSelectedItem] = useState(null);
   const [currentView, setCurrentView] = useState('');
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
 
   if (role === 'ADMIN') {
     return (
-      <h1> Login as STUDENT or INSTRUCTOR to see your courses!</h1>
+      <h1> Login as STUDENT or INSTRUCTOR to see your courses! </h1>
     )
   }
 
-  console.log('token: ', token);
-  console.log('userData', userData);
   return (
     // show a table with my courses(for student) and my reviews(for instructor)
     // render selected content according to currentView
@@ -42,6 +41,7 @@ export default function MyCourses() {
           selectedItem={selectedItem}
           setSelectedCourse={setSelectedItem}
           setCurrentView={setCurrentView}
+          refreshTrigger={refreshTrigger}
         />
       </div>
       <RenderContent
@@ -51,6 +51,7 @@ export default function MyCourses() {
         setCurrentView={setCurrentView}
         currentView={currentView}
         personal={true}
+        setRefreshTrigger={setRefreshTrigger}
       />
       </div>
   );

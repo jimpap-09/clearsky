@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from 'lucide-react';
 
-export default function UserDropDown({options}) {
+export default function UserDropDown({options, start, setAction}) {
 
     const [ open, setOpen ] = useState(false);
     const toggleDropDown = () => setOpen(!open);
-    const [option, setOption] = useState('Institution representative');
+    const [option, setOption] = useState(start);
 
     const handleSelect = async (value) => {
         setOpen(false);
         setOption(value);
+        setAction(value);
     }
 
     return (

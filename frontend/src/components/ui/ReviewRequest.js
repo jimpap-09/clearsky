@@ -4,7 +4,7 @@ import axios from 'axios';
 import useAuth from '../../context/AuthContext';
 
 // create review - main page
-export default function ReviewRequest({studentId, course, onBack}) {
+export default function ReviewRequest({studentId, course, onBack, setRefreshTrigger}) {
 
     // set a state for the upcoming request
     const [request, setRequest] = useState('');
@@ -23,9 +23,11 @@ export default function ReviewRequest({studentId, course, onBack}) {
             return;
         }
         try {
+            console.log('request: ', request);
             console.log('courseId: ', courseId);
             console.log('studentId: ', studentId);
             console.log('studentMessage: ', request);
+            console.log('post_request_url: ', post_request_url);
 
             const res = await axios.post(post_request_url, {
                 courseId,
@@ -39,15 +41,20 @@ export default function ReviewRequest({studentId, course, onBack}) {
                 alert(res.data.error);
                 return;
             }
-            alert('Backend response: ', res.headers['x-message']);
+            alert(`Backend response: ${res.headers['x-message']}`);
             console.log("Posted Request: ", res.data);
+
+            setRefreshTrigger(prev => !prev); // trigger refresh του πίνακα
+            onBack(); // επιστροφή πίσω
         }
         catch(err) {console.error(err);}
     }
     return (
         <div>
         {onBack && (
-        <button onClick={onBack}>
+        <button
+            className='main-button'
+            onClick={onBack}>
             Back
         </button>
         )}
@@ -71,6 +78,7 @@ export default function ReviewRequest({studentId, course, onBack}) {
                     />
                     <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '10px'}}>
                         <button
+                            className='main-button'
                             type='submit'
                             onClick={handleSubmit}
                         >

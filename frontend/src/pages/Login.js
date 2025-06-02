@@ -4,7 +4,7 @@ import useAuth from "../context/AuthContext";
 import { get_login_url } from '../apiConfig';
 import axios from 'axios'
 import { buildPath } from '../utils/routes';
-import "../styles/LoginPage.css";
+import MessageArea from '../components/ui/MessageArea';
 
 // login - main page
 export default function Login() {
@@ -43,12 +43,12 @@ export default function Login() {
                 <div className='main-container-body'>
                     <form
                         onSubmit={handleSubmit}
-                        className='login-form'
+                        className='main-form'
                     >
                         <div className="label-container">
-                            <label className='login-label'>Email:</label>
+                            <label className='main-label'>Email:</label>
                             <input
-                                className='login-input'
+                                className='main-input'
                                 type="text"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -56,9 +56,9 @@ export default function Login() {
                             />
                         </div>
                         <div className="label-container">
-                            <label className='login-label'>Password:</label>
+                            <label className='main-label'>Password:</label>
                             <input
-                                className='login-input'
+                                className='main-input'
                                 type="text"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -84,14 +84,7 @@ export default function Login() {
                     </form>
                 </div>
             </div>
-            <div className='message-area'>
-                <div className='main-container'>
-                    <h2 className='main-container-header'>Message area</h2>
-                    <div className='message-text'>
-                        <p>write your message here</p>
-                    </div>
-                </div>
-            </div>
+            <MessageArea/>
         </>
     )
 }

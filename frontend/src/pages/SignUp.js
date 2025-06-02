@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { post_register_url } from '../apiConfig';
+import MessageArea from '../components/ui/MessageArea';
 import axios from 'axios'
-
-import "../styles/LoginPage.css";
 
 export default function SignUp() {
     // we define a useState for each credential
@@ -66,7 +65,8 @@ export default function SignUp() {
         }
         catch (error) {
             alert("Register failed. Please check your credentials");
-            console.log('Registration error:', error.response?.data);        }
+            console.error('Registration error:', error.response?.data);
+        }
     };
 
     return (
@@ -75,10 +75,14 @@ export default function SignUp() {
             <div className="main-container">
                 <h2 className='main-container-header'>Please enter your credentials</h2>
                 <div className='main-container-body'>
-                    <form onSubmit={handleSubmit}>
+                    <form
+                        onSubmit={handleSubmit}
+                        className='main-form'    
+                    >
                         <div className="label-container">
-                            <label>Username:</label>
+                            <label className='main-label'>Username:</label>
                             <input
+                                className='main-input'
                                 type="text"
                                 value={username}
                                 onChange={handleUsernameChange}
@@ -86,8 +90,9 @@ export default function SignUp() {
                             />
                         </div>
                         <div className="label-container">
-                            <label>Password:</label>
+                            <label className='main-label'>Password:</label>
                             <input
+                                className='main-input'
                                 type="text"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -95,8 +100,9 @@ export default function SignUp() {
                             />
                         </div>
                         <div className="label-container">
-                            <label>Email:</label>
+                            <label className='main-label'>Email:</label>
                             <input
+                                className='main-input'
                                 type="text"
                                 value={email}
                                 onChange={handleEmailChange}
@@ -105,15 +111,16 @@ export default function SignUp() {
                             />
                         </div>
                         <div className="label-container">
-                            <label>Name:</label>
+                            <label className='main-label'>Name:</label>
                             <input
+                                className='main-input'
                                 type="text"
                                 value={name}
                                 onChange={(e) => {setName(e.target.value)}}
                             />
                         </div>
                         <div className="label-container">
-                            <label>Role:</label>
+                            <label className='main-label'>Role:</label>
                             <select
                             value={role}
                             onChange={(e) => setRole(e.target.value)}
@@ -125,21 +132,16 @@ export default function SignUp() {
                             </select>
                         </div>
                         <div className='submit-btn'>
-                            <button type="submit">
+                            <button
+                                className='main-button'
+                                type="submit">
                                 Sing up
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
-            <div className='message-area'>
-                <div className='main-container'>
-                    <h2 className='main-container-header'>Message area</h2>
-                    <div className='message-text'>
-                        <p>write your message here</p>
-                    </div>
-                </div>
-            </div>
+            <MessageArea/>
         </>
     )
 }

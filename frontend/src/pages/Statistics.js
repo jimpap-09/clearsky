@@ -30,7 +30,7 @@ export default function Statistics() {
       <div className='main-container'>
         <div className='main-container-header'>
           <div style={{fontsize: '1.5rem', fontWeight: 'bold'}}>Available Course Statistics</div>
-          <button
+          <button className='main-button'
             style={{height: '30px', display: 'flex', alignItems: 'center',}}
           >
             <Link
