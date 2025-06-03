@@ -31,6 +31,7 @@ export const fetchStudentCourses = async (id) => {
     console.log('API response: ', res.data);
     const courses = res.data.map((course) => ({
       id: course.id,
+      instructorId: course.instructorId,
       name: course.title,
       period: course.period,
       status: course.status,
@@ -52,6 +53,7 @@ export const fetchAllCourses = async () => {
     console.log('API response: ', res.data);
     const courses = res.data.map((course) => ({
       id: course.id,
+      instructorId: course.instructorId,
       name: course.title,
       period: course.period,
       status: course.status,

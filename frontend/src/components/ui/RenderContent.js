@@ -30,6 +30,7 @@ export default function RenderContent({id, selectedItem, setSelectedItem, setCur
         );
 
       case 'review':
+        console.log("Full course object:", JSON.stringify(selectedItem, null, 2));
         return (
           <ReviewRequest
             studentId={id}

@@ -8,6 +8,10 @@ const Course = sequelize.define('Course', {
         primaryKey: true,
         allowNull: false,
     },
+    instructorId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     title: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -20,7 +24,10 @@ const Course = sequelize.define('Course', {
         type: DataTypes.ENUM('open', 'closed'),
         allowNull: false,
     },
-
+    hasReply: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
 }, {
     tableName: 'courses',
     timestamps: true
@@ -32,13 +39,6 @@ Course.associate = (models) => {
         foreignKey: 'courseId',
         otherKey: 'studentId',
         as: 'students'
-    });
-  
-    Course.belongsToMany(models.InstructorCourse, {
-        through: models.InstructorCourse,
-        foreignKey: 'courseId',
-        otherKey: 'instructorId',
-        as: 'instructors'
     });
 };
 module.exports = Course;

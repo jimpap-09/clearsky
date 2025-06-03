@@ -1,26 +1,16 @@
-const InstructorCourse = require('../models/InstructorCourse');
 const StudentCourse = require('../models/StudentCourse');
 const Course = require('../models/Course');
 
 exports.getCoursesByInstructor = async (req, res) => {
   const { instructorId } = req.params;
   try {
-    // Step 1: Find courseIds for this instructor
-    const instructorCourses = await InstructorCourse.findAll({
-        where: { instructorId },
-        attributes: ['courseId'],
-    });
-    const courseIds = instructorCourses.map(ic => ic.courseId);
     const hasReplyMap = {};
-    console.log('courseIds: ', courseIds);
-
-    instructorCourses.forEach(sc => {
-      hasReplyMap[sc.courseId] = sc.hasReply;
+    const courses = await Course.findAll({
+        where: { instructorId: instructorId },
     });
 
-    // Step 2: Fetch the actual courses
-    const courses = await Course.findAll({
-        where: { id: courseIds }
+    courses.forEach(sc => {
+      hasReplyMap[sc.courseId] = sc.hasReply;
     });
 
     const result = courses.map(course => ({
@@ -78,43 +68,6 @@ exports.getCoursesByStudent = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch courses for student.' });
   }
 };
-
-exports.putCourseReply = async (req, res) => {
-  try {
-    const { studentId, courseId } = req.params;
-    const { status } = req.body;
-    const updated = await StudentCourse.update(
-      {hasReply: status},
-      {where: {studentId, courseId}}
-    );
-    console.log('updated: ', updated);
-    if(updated[0] === 0) {
-      return res.status(404).json({ error:'StudentCourse entry not found' });
-    }
-    res.status(200).json({ message: 'Reply status updated successfully' });
-  } catch (error) {
-    console.error('Error updating reply status:', error);
-    res.status(500).json({ error: 'Failed to update reply status.' });
-  }
-}
-
-exports.putCourseReview = async (req, res) => {
-  try {
-    const { studentId, courseId } = req.params;
-    const { status } = req.body;
-    const updated = await StudentCourse.update(
-      {hasReview: status},
-      {where: {studentId, courseId}}
-    );
-    if(updated[0] === 0) {
-      return res.status(404).json({ error:'StudentCourse entry not found' });
-    }
-    res.status(200).json({ message: 'Review status updated successfully' });
-  } catch (error) {
-    console.error('Error updating review status:', error);
-    res.status(500).json({ error: 'Failed to update review status.' });
-  }
-}
 
 exports.getAllCourses = async (req, res) => {
     try {

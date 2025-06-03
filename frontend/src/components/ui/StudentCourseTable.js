@@ -21,6 +21,7 @@ export default function StudentCourseTable({id, selectedCourse, onSelect, setVie
 
   console.log("Student Courses: ", courses);
   console.log("selectedCourse's id: ", selectedCourse?.id);
+  console.log("selectedCourse ins: ", selectedCourse?.instructorId);
 
   return (
     <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>

@@ -11,6 +11,10 @@ const ReviewRequest = sequelize.define('ReviewRequest', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  instructorId: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   studentMessage: {
     type: DataTypes.TEXT,
     allowNull: false

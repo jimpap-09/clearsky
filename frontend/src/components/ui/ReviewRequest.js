@@ -11,6 +11,7 @@ export default function ReviewRequest({studentId, course, onBack, setRefreshTrig
     // receive token for authorization
     const {token} = useAuth();
     const courseId = course?.id;
+    const instructorId = course?.instructorId;
 
     // when submit button is clicked
     // check if the request is empty
@@ -25,6 +26,7 @@ export default function ReviewRequest({studentId, course, onBack, setRefreshTrig
         try {
             console.log('request: ', request);
             console.log('courseId: ', courseId);
+            console.log('instructorId: ', instructorId);
             console.log('studentId: ', studentId);
             console.log('studentMessage: ', request);
             console.log('post_request_url: ', post_request_url);
@@ -32,6 +34,7 @@ export default function ReviewRequest({studentId, course, onBack, setRefreshTrig
             const res = await axios.post(post_request_url, {
                 courseId,
                 studentId,
+                instructorId,
                 studentMessage: request,
             },
             {

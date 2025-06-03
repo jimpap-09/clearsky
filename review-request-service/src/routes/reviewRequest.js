@@ -30,12 +30,6 @@ router.get('/getReviewRequest/:courseId/:studentId',
     reviewRequestController.getStudentReviewRequest
 );
 
-// Get review request by instructor
-router.get('/getReviewRequestsByInstructor/:instructorId',
-    auth,
-    reviewRequestController.getInstructorReviews
-);
-
 // Get pending review request by instructor
 router.get('/getPendingReviewRequestsByInstructor/:instructorId',
     auth,

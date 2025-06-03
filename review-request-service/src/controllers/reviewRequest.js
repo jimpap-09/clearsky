@@ -3,7 +3,7 @@ const ReviewRequest = require('../models/reviewRequest');
 const axios = require('axios');
 
 exports.createReviewRequest = async (req, res) => {
-  const { courseId, studentId, studentMessage } = req.body;
+  const { courseId, studentId, instructorId, studentMessage } = req.body;
 
   try {
 
@@ -13,17 +13,30 @@ exports.createReviewRequest = async (req, res) => {
       console.log('Backend error: You have alr posted a review request for that course.');
       return res.status(203).json({ error: 'You have already posted a review request fot that course.' });
     }
-
+    console.log('Creating a new review request:', {
+      courseId,
+      studentId,
+      instructorId,
+      studentMessage
+    });
     const review = await ReviewRequest.create({
       courseId,
       studentId,
+      instructorId,
       studentMessage
     });
 
     console.log('A new review has been created!');
 
-    const putResponse = await axios.put(`http://course-service:4004/putCourseReview/${studentId}/${courseId}`, {status: true});
-    console.log('PutCourseReview response:', putResponse.data);
+    response = await axios.post('http://event-bus:4005/events', {
+      type: 'REVIEW_REQUEST',
+      data: {
+        studentId,
+        courseId,
+      }
+    });
+
+    console.log('PutCourseReview response:', response.data);
 
     res.set('X-Message', 'Review request created successfully.');
     res.status(201).json(review); // μόνο τα δεδομένα
@@ -55,8 +68,15 @@ exports.respondToReviewRequest = async (req, res) => {
     request.status = status;
     await request.save();
 
-    const putResponse = await axios.put(`http://course-service:4004/putCourseReply/${studentId}/${courseId}`, {status: true});
-    console.log('PutCourseReply response:', putResponse.data);
+    response = await axios.post('http://event-bus:4005/events', {
+      type: 'REVIEW_RESPONSE',
+      data: {
+        studentId,
+        courseId,
+      }
+    });
+
+    console.log('PutCourseReply response:', response.data);
 
     res.set('X-Message', 'Reply created successfully.');
     res.status(200).json(request);
@@ -114,33 +134,22 @@ exports.getCourseReviewRequests = async (req, res) => {
 }
 
 // get all requests by instructor
-exports.getInstructorReviews = async (req, res) => {
+/* exports.getInstructorReviewRequests = async (req, res) => {
   const {instructorId} = req.params;
 
   try {
-    const {data: instructorCourses} = await axios.get(`http://course-service:4004/getInstructorCourses/${instructorId}`);
-    const courseIds = instructorCourses.map(c=>c.id);
-
-    console.log('Instructor-Reviews-courseIds: ', courseIds);
-
     const requests = await ReviewRequest.findAll({
-      where: {courseId: courseIds}},
+      where: { instructorId: instructorId },},
     );
     
     const studentIds = [...new Set(requests.map(r => r.studentId))];
 
-    const {data: users} = await axios.get(`http://user-mgmt-service:5000/getUsersByIds/${studentIds}`);
     console.log('Instructor-Reviews-users: ', users);
     const result = requests.map(req => {
-      const user = users.find(u => u.id == req.studentId);
-      const course = instructorCourses.find(c => c.id == req.courseId);
       const request = {
         id: req.id,
         courseId: req.courseId,
         studentId: req.studentId,
-        student: user?.name || '',
-        course: course?.title || '',
-        period: course?.period,
         studentMessage: req.studentMessage,
         professorMessage: req.professorMessage,
         status: req.status,
@@ -158,35 +167,22 @@ exports.getInstructorReviews = async (req, res) => {
     res.status(500).json({message: "Error fetching review requests"});
   }
 }
+*/
 
 // get all pending requests by instructor
 exports.getInstructorPendingReviews = async (req, res) => {
   const {instructorId} = req.params;
 
   try {
-    const {data: instructorCourses} = await axios.get(`http://course-service:4004/getInstructorCourses/${instructorId}`);
-    const courseIds = instructorCourses.map(c=>c.id);
-
-    console.log('Instructor-Reviews-courseIds: ', courseIds);
-
     const requests = await ReviewRequest.findAll({
-      where: {courseId: courseIds, status: 'pending'}},
+      where: {instructorId: instructorId, status: 'pending'}},
     );
     
-    const studentIds = [...new Set(requests.map(r => r.studentId))];
-
-    const {data: users} = await axios.get(`http://user-mgmt-service:5000/getUsersByIds/${studentIds}`);
-    console.log('Instructor-Reviews-users: ', users);
     const result = requests.map(req => {
-      const user = users.find(u => u.id == req.studentId);
-      const course = instructorCourses.find(c => c.id == req.courseId);
       const request = {
         id: req.id,
         courseId: req.courseId,
         studentId: req.studentId,
-        student: user?.name || '',
-        course: course?.title || '',
-        period: course?.period,
         studentMessage: req.studentMessage,
         professorMessage: req.professorMessage,
         status: req.status,

@@ -80,6 +80,18 @@ export default function SignUp() {
                         className='main-form'    
                     >
                         <div className="label-container">
+                            <label className='main-label'>Role:</label>
+                            <select
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                            style={{padding: '10px', borderRadius: '10px', cursor: 'pointer'}}
+                            >
+                                <option value="STUDENT">Student</option>
+                                <option value="INSTRUCTOR">Instructor</option>
+                                <option value="ADMIN">Admin</option>
+                            </select>
+                        </div>
+                        <div className="label-container">
                             <label className='main-label'>Username:</label>
                             <input
                                 className='main-input'
@@ -119,23 +131,11 @@ export default function SignUp() {
                                 onChange={(e) => {setName(e.target.value)}}
                             />
                         </div>
-                        <div className="label-container">
-                            <label className='main-label'>Role:</label>
-                            <select
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                            style={{padding: '10px', borderRadius: '10px', cursor: 'pointer'}}
-                            >
-                                <option value="STUDENT">Student</option>
-                                <option value="INSTRUCTOR">Instructor</option>
-                                <option value="ADMIN">Admin</option>
-                            </select>
-                        </div>
                         <div className='submit-btn'>
                             <button
                                 className='main-button'
                                 type="submit">
-                                Sing up
+                                Sign up
                             </button>
                         </div>
                     </form>
