@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import { useEffect, useState } from 'react';
 // import { fetchInstructorReviewRequests } from '../../api/reviews';
 import { fetchInstructorPendingReviewRequests } from '../../api/reviews';
 
@@ -18,7 +18,7 @@ export default function ReviewTable({id, token, selectedReview, onSelect, setVie
 
   if(!reviews || reviews.length === 0) return (
     <h2>
-      No Reviews!
+      No Pending Reviews!
     </h2>
   );
 

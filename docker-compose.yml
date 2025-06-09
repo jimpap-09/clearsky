@@ -4,12 +4,15 @@ services:
   # Event Bus Service
   event-bus:
     build: ./event-bus
+    volumes:
+      - ./event-bus:/app
+      - /app/node_modules
     ports:
       - "4005:4005"
     environment:
       - NODE_ENV=development
       - JWT_SECRET=secret
-      - DB_HOST=postgres 
+      - DB_HOST=postgres
       - DB_PORT=5432
       - DB_NAME=event_db
       - DB_USER=postgres
@@ -22,13 +25,16 @@ services:
 
   user-mgmt-service:
     build: ./user-mgmt-service
+    volumes:
+      - ./user-mgmt-service:/app
+      - /app/node_modules
     ports:
       - "5000:5000"
     environment:
       - EVENT_BUS_URL=http://event-bus:4005
       - JWT_SECRET=secret
       - NODE_ENV=development
-      - DB_HOST=postgres 
+      - DB_HOST=postgres
       - DB_PORT=5432
       - DB_NAME=user_db
       - DB_USER=postgres
@@ -41,16 +47,18 @@ services:
       event-bus:
         condition: service_started
 
-
   review-request-service:
     build: ./review-request-service
-    ports: 
+    volumes:
+      - ./review-request-service:/app
+      - /app/node_modules
+    ports:
       - "4003:4003"
     environment:
       - EVENT_BUS_URL=http://event-bus:4005
       - JWT_SECRET=secret
       - NODE_ENV=development
-      - DB_HOST=postgres 
+      - DB_HOST=postgres
       - DB_PORT=5432
       - DB_NAME=review_db
       - DB_USER=postgres
@@ -65,6 +73,9 @@ services:
 
   post-grades-service:
     build: ./post-grades-service
+    volumes:
+      - ./post-grades-service:/app
+      - /app/node_modules
     ports:
       - "4001:4001"
     environment:
@@ -83,9 +94,12 @@ services:
         condition: service_started
       postgres:
         condition: service_healthy
-  
+
   course-service:
     build: ./course-service
+    volumes:
+      - ./course-service:/app
+      - /app/node_modules
     ports:
       - "4004:4004"
     environment:
@@ -100,13 +114,16 @@ services:
     networks:
       - microservice-net
     depends_on:
-      event-bus: 
+      event-bus:
         condition: service_started
       postgres:
         condition: service_healthy
 
   analytics-service:
     build: ./analytics-service
+    volumes:
+      - ./analytics-service:/app
+      - /app/node_modules
     ports:
       - "4002:4002"
     environment:
@@ -129,6 +146,9 @@ services:
   # Frontend Service
   frontend:
     build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     ports:
       - "3000:3000"
     environment:
@@ -154,7 +174,7 @@ services:
       - microservice-net
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s  
+      interval: 5s
       timeout: 5s
       retries: 5
 

@@ -33,7 +33,7 @@ exports.getCoursesByStudent = async (req, res) => {
     // 1. Get studentCourse entries with hasReview
     const studentCourses = await StudentCourse.findAll({
       where: { studentId },
-      attributes: ['courseId', 'hasReview']
+      attributes: ['courseId', 'hasReview', 'hasReply']
     });
 
     // 2. Extract ids and build a lookup map
