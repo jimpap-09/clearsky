@@ -10,7 +10,7 @@ export default function RenderContent({id, selectedItem, setSelectedItem, setCur
   // so we set currentView and selectedCourse to empty
     function back() {
       setCurrentView('');
-      setSelectedItem('');
+      setSelectedItem(null);
       console.log('currentView = empty');
       console.log('selectedCourse = null');
     }
@@ -50,13 +50,17 @@ export default function RenderContent({id, selectedItem, setSelectedItem, setCur
         );
 
       case 'reply':
+      
+        if (!selectedItem || typeof selectedItem !== 'object') {
+          return <p>Loading review...</p>; // or null
+        }
         return (
           <Reply
             review={selectedItem}
             onBack={back}
           />
         );
-
+        
       default:
         return null;
     }

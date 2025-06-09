@@ -1,4 +1,5 @@
 // controllers/gradeReviewController.js
+const Course = require('../models/Course');
 const ReviewRequest = require('../models/reviewRequest');
 const axios = require('axios');
 
@@ -164,6 +165,6 @@ exports.getInstructorPendingReviews = async (req, res) => {
     res.status(200).json(result);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Error fetching review requests' });
+    res.status(500).json({message: "Error fetching review requests"});
   }
-};
+}

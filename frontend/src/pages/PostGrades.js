@@ -15,6 +15,7 @@ export default function PostGrades() {
     const [period, setPeriod] = useState('');
     const [num, setNum] = useState('');
     const [init, setInit] = useState(true);
+    const [validating, setValidating] = useState(false);
 
     const post_grades_url = init ? post_init_grades_url : post_final_grades_url;
     const header = init ? 'INITIAL' : 'FINAL';
@@ -49,7 +50,7 @@ export default function PostGrades() {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}`
             }});
-            alert(res.data.message);
+            alert(`File uploaded successfully: ${res.data.filename}`);
             console.log("Uploaded file:", res.data.filename);
         } catch(error) {
             console.error(error);
@@ -61,6 +62,7 @@ export default function PostGrades() {
     // make sure the credentials are the same with these in the chosen xlsx file
     const handleValidate = async (e) => {
         e.preventDefault();
+        setValidating(true);
         try {
             // send request to backend
             // and show the response
@@ -72,11 +74,13 @@ export default function PostGrades() {
                 "isFinalised": !init,
             },
             {headers: {Authorization: `Bearer ${token}`}});
-            alert(res.data.message);
+            alert('Validation successful! The grades are posted.');
             console.log(res.data);
         } catch(error) {
             console.error(error);
             alert("Failed to validate file");
+        } finally {
+            setValidating(false);
         }
     }
 
@@ -91,7 +95,7 @@ export default function PostGrades() {
                     backgroundColor: init ? '#ADD8E6' : '#F0FFFF' // active: light blue
                 }}
                 >
-                    INITIAL
+                    Post Initial Grades
                 </button>
                 <button
                 className='main-button'
@@ -100,7 +104,7 @@ export default function PostGrades() {
                     backgroundColor: !init ? '#ADD8E6' : '#F0FFFF' // active: light blue
                 }}
                 >
-                    FINAL
+                    Post Final Grades
                 </button>
             </div>
             <div className='main-container'>
@@ -119,7 +123,7 @@ export default function PostGrades() {
                             onChange={handleFileChange}
                             />
                         </div>
-                        <button className='main-button' type="submit">submit {script} grades</button>
+                        <button className='main-button' type="submit">Submit {script} grades</button>
                     </form>
                 </div>
             </div>
@@ -169,13 +173,18 @@ export default function PostGrades() {
                         onChange={(e)=>{setNum(e.target.value)}}
                         />
                     </div>
+                    {validating && (
+                        <div style={{ textAlign: 'center', margin: '10px 0', color: '#333' }}>
+                            <span>Validating... Please wait</span>
+                        </div>
+                    )}
+
                     <div style={{display: 'flex', gap:'10px'}}>
-                        <button className='main-button' type="submit">CONFIRM</button>
+                        <button className='main-button' type="submit" disabled={validating}>{validating ? 'Validating...' : 'CONFIRM'}</button>
                         <button className='main-button' type="decline">CANCEL</button>
                     </div>
                 </form>
             </div>
-            <MessageArea/>
         </div>
     )
 }

@@ -4,7 +4,7 @@ import { fetchInstructorPendingReviewRequests } from '../../api/reviews';
 
 // review table
 export default function ReviewTable({id, token, selectedReview, onSelect, setView}) {
-
+  
   const [reviews, setReviews] = useState([]);
   // fetch all student courses
   useEffect(() => {
@@ -37,31 +37,34 @@ export default function ReviewTable({id, token, selectedReview, onSelect, setVie
       </thead>
       <tbody>
         {reviews.map((review, index) => {
-          console.log('review: ', review);
-          const isSelected = selectedReview === review;
-          const request = review.request;
+          const isSelected = selectedReview?.id === review?.id;
           return (
             <tr
-            key={index}
-            onClick={() => onSelect(review)}
-            style={{
-              cursor: 'pointer',
-              backgroundColor: isSelected ? '#cce5ff' : undefined,
-              textAlign: 'center'
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e6f0ff')}
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = isSelected ? '#cce5ff' : '')
-            }>
-              <td>{request.course}</td>
-              <td>{request.period}</td>
-              <td>{request.student}</td>
+              key={index}
+              onClick={() => onSelect(review)}
+              style={{
+                cursor: 'pointer',
+                backgroundColor: isSelected ? '#cce5ff' : undefined,
+                textAlign: 'center'
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e6f0ff')}
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = isSelected ? '#cce5ff' : '')
+              }>
+              <td>{review.courseName}</td>
+              <td>{review.coursePeriod}</td>
+              <td>{review.studentId}</td>
               <td>
                 <button
                   className='main-button'
-                  onClick={()=>{setView('reply'); console.log('currentView = reply')}}
+                  onClick={(e) => {
+                    e.stopPropagation(); // prevent row click
+                    onSelect(review);
+                    setView('reply');
+                    console.log('currentView = reply');
+                  }}
                 >
-                  Reply
+                Reply
                 </button>
               </td>
             </tr>

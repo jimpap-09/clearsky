@@ -45,13 +45,14 @@ export default function Profile() {
                 {!isStudent && (
                 <div className="label-container">
                     <label className="main-label">{isInstructor ? 'Post Grades' : 'User Management:'}</label>
-                    <button className="main-button">
-                        <Link
-                        style={{textDecoration:'none', color: 'inherit'}}
-                        to={buildPath(userData, subPath)}>
-                            {isInstructor ? 'post grades' : 'user management'}
-                        </Link>
-                    </button>
+                    <Link
+                        className="main-button"
+                        style={{ textDecoration: 'none', color: 'inherit', display: 'inline-block' }}
+                        to={buildPath(userData, subPath)}
+                    >
+                        {isInstructor ? 'post grades' : 'user management'}
+                    </Link>
+
                 </div>
                 )}
             </form>

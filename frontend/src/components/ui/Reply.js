@@ -6,19 +6,17 @@ import UserDropDown from './UserDropDown';
 
 // create reply - main page
 export default function Reply({review, onBack}) {
-
     // set a state for the upcoming reply
     const [reply, setReply] = useState('');
     const [action, setAction] = useState('');
 
     // receive token for authorization
     const {token, userData} = useAuth();
-    const request = review.request;
-    const courseId = request.courseId;
-    const studentId = request.studentId;
-    const options = ['accepted', 'rejected'];
+    const courseId = review.courseId;
+    const studentId = review.studentId;
+    const options = ['accept', 'reject'];
     const instructorId = userData?.id;
-    const studentMessage = request.studentMessage;
+    const studentMessage = review.studentMessage;
 
     // when submit button is clicked
     // check if the request is empty
@@ -26,6 +24,11 @@ export default function Reply({review, onBack}) {
     // receive backend response
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!action) {
+            alert('Please select an action (accept or reject)!');
+            return;
+        }
+
         if(!reply) {
             alert('Please submit a non empty reply!')
             return;
@@ -38,8 +41,8 @@ export default function Reply({review, onBack}) {
             { professorReply: reply, status: `${action}` },
             { headers: { Authorization: `Bearer ${token}` }});
 
-            alert('Backend response: ', res.headers['x-message']);
-            console.log("Putted Reply: ", res.data);
+            alert('Reply sent to student!');
+            console.log("Put Reply: ", res.data);
         }
         catch(err) {
             console.error('Error on put reply request.', err);
@@ -55,7 +58,7 @@ export default function Reply({review, onBack}) {
         </button>
         )}
         <div className='main-container'>
-            <h4 className='main-container-header'>REPLY TO GRADE REVIEW REQUEST {request.course}-{request.period}-{request.student}</h4>
+            <h4 className='main-container-header'>REPLY TO GRADE REVIEW REQUEST {review.courseName}-{review.period}-{review.studentId}</h4>
             <div className='main-container-body'>
                 <div style={{marginBottom: '1.5rem'}}>
                     <UserDropDown options = {options} start={'action'} setAction={setAction}/>
@@ -103,7 +106,7 @@ export default function Reply({review, onBack}) {
                         type='submit'
                         onClick={handleSubmit}
                     >
-                        upload reply attachment
+                        Sent reply
                     </button>
                 </div>
             </div>
