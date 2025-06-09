@@ -44,7 +44,7 @@ export default function ReviewRequest({studentId, course, onBack, setRefreshTrig
                 alert(res.data.error);
                 return;
             }
-            alert(`Backend response: ${res.headers['x-message']}`);
+            alert(`Review request for ${course.name} posted successfully!`);
             console.log("Posted Request: ", res.data);
 
             setRefreshTrigger(prev => !prev); // trigger refresh του πίνακα

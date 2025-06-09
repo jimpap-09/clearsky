@@ -60,11 +60,11 @@ export default function SignUp() {
                 role,
                 name
             });
-            alert("Register Successful. Continue to login...");
+            alert("Registration Successful. Continue to login...");
             navigate('/login');
         }
         catch (error) {
-            alert("Register failed. Please check your credentials");
+            alert("Registration failed. Please check your credentials");
             console.error('Registration error:', error.response?.data);
         }
     };
@@ -88,7 +88,6 @@ export default function SignUp() {
                             >
                                 <option value="STUDENT">Student</option>
                                 <option value="INSTRUCTOR">Instructor</option>
-                                <option value="ADMIN">Admin</option>
                             </select>
                         </div>
                         <div className="label-container">
@@ -105,7 +104,7 @@ export default function SignUp() {
                             <label className='main-label'>Password:</label>
                             <input
                                 className='main-input'
-                                type="text"
+                                type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
@@ -141,7 +140,6 @@ export default function SignUp() {
                     </form>
                 </div>
             </div>
-            <MessageArea/>
         </>
     )
 }

@@ -1,4 +1,5 @@
 // controllers/gradeReviewController.js
+const Course = require('../models/Course');
 const ReviewRequest = require('../models/reviewRequest');
 const axios = require('axios');
 
@@ -51,7 +52,7 @@ exports.respondToReviewRequest = async (req, res) => {
   const { courseId, studentId } = req.params;
   const { professorReply, status } = req.body;
   
-  if (!['accepted', 'rejected'].includes(status)) {
+  if (!['accept', 'reject'].includes(status)) {
     return res.status(400).json({ error: 'Invalid status' });
   }
 
@@ -171,32 +172,39 @@ exports.getCourseReviewRequests = async (req, res) => {
 
 // get all pending requests by instructor
 exports.getInstructorPendingReviews = async (req, res) => {
-  const {instructorId} = req.params;
+  const { instructorId } = req.params;
 
   try {
     const requests = await ReviewRequest.findAll({
-      where: {instructorId: instructorId, status: 'pending'}},
-    );
-    
-    const result = requests.map(req => {
-      const request = {
+      where: { instructorId, status: 'pending' },
+    });
+
+    // Wait for all course lookups to resolve
+    const result = await Promise.all(requests.map(async (req) => {
+      const course = await Course.findByPk(req.courseId);
+
+      if (!course) {
+        console.error('Course not found for ID:', req.courseId);
+        return null; // skip this entry
+      }
+
+      return {
         id: req.id,
         courseId: req.courseId,
+        courseName: course.courseName,
+        coursePeriod: course.period,
         studentId: req.studentId,
         studentMessage: req.studentMessage,
         professorMessage: req.professorMessage,
         status: req.status,
-      }
-      console.log('Instructor-Reviews-request: ', request);
-      return {
-        request
-      }
-    });
+      };
+    }));
 
-  res.status(200).json(result);
+    // Filter out null entries (in case course not found)
+    res.status(200).json(result.filter(r => r !== null));
 
-  } catch(err) {
+  } catch (err) {
     console.error(err);
-    res.status(500).json({message: "Error fetching review requests"});
+    res.status(500).json({ message: "Error fetching review requests" });
   }
-}
+};

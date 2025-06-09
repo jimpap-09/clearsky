@@ -59,7 +59,7 @@ export default function Login() {
                             <label className='main-label'>Password:</label>
                             <input
                                 className='main-input'
-                                type="text"
+                                type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
@@ -84,7 +84,6 @@ export default function Login() {
                     </form>
                 </div>
             </div>
-            <MessageArea/>
         </>
     )
 }

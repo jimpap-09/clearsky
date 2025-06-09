@@ -15,7 +15,11 @@ const EVENT_DISPATCH_MAP = {
         {
             name: 'User Service',
             url: 'http://user-mgmt-service:5000/events', 
-        }
+        },
+        {
+            name: 'Review Request Service',
+            url: 'http://review-request-service:4003/events',
+        },
     ],
     FINAL_GRADES: [
         {
@@ -29,23 +33,24 @@ const EVENT_DISPATCH_MAP = {
         {
             name: 'User Service',
             url: 'http://user-mgmt-service:5000/events',
-        }
+        },
+        {
+            name: 'Review Request Service',
+            url: 'http://review-request-service:4003/events',
+        },
     ],
     REVIEW_REQUEST: [
         {
             name: 'Course Service',
             url: 'http://course-service:4004/events', 
-        }
+        },
     ],
     REVIEW_RESPONSE: [
         {
             name: 'Course Service',
             url: 'http://course-service:4004/events', 
-        }
+        },
     ],
-  // You can add more types here in future:
-  // 'USER_REGISTERED': [{ name: 'Notification Service', url: 'http://...' }],
-  // 'COURSE_CREATED': [{ name: 'Search Service', url: 'http://...' }]
 };
 
 exports.receiveEvent = async (req, res) => {

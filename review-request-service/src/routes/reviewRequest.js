@@ -1,8 +1,13 @@
 const express = require('express');
 const reviewRequestController = require('../controllers/reviewRequest');
+const eventsController = require('../controllers/event');
 const auth = require('../middleware/auth');
 const requireRole = require('../middleware/roles');
 const router = express.Router();
+
+router.post('/events',
+    eventsController.handleEvent
+);
 
 // POST a review request
 router.post('/createReviewRequest',
