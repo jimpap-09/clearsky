@@ -1,4 +1,5 @@
 // controllers/gradeImportController.js
+
 const Course = require('../models/Course');
 const StudentCourse = require('../models/StudentCourse');
 
@@ -16,8 +17,8 @@ function parseCourseMetadata(headerText) {
 }
 
 exports.handleEvent = async (req, res) => {
-    console.log('we reached course service');
     const { type, data } = req.body;
+
     try {
         if(type == 'INITIAL_GRADES' || type == 'FINAL_GRADES') {
             const { instructorId, grades } = data;
@@ -64,52 +65,32 @@ exports.handleEvent = async (req, res) => {
             try {
                 const { studentId, courseId } = data;
                 const updated = await StudentCourse.update(
-                    {hasReview: true},
-                    {where: {studentId, courseId}}
+                  {hasReview: true},
+                  {where: {studentId, courseId}}
                 );
                 if(updated[0] === 0) {
-                    return res.status(404).json({ error:'StudentCourse entry not found' });
+                  return res.status(404).json({ error:'StudentCourse entry not found' });
                 }
                 res.status(200).json({ message: 'Review status updated successfully' });
-            } catch (error) {
+              } catch (error) {
                 console.error('Error updating review status:', error);
                 res.status(500).json({ error: 'Failed to update review status.' });
-            }
-        } else if(type == 'REVIEW_RESPONSE') {
+              }
+        } else {
             try {
-                console.log('update course reached course service');
                 const { studentId, courseId } = data;
                 const updated = await StudentCourse.update(
-                { hasReply: true },
-                { where: { studentId, courseId } }
+                    { hasReply: true },
+                    { where: { studentId, courseId } }
                 );
-                console.log('course updated:', updated);
                 if (updated[0] === 0) {
-                return res.status(404).json({ error: 'StudentCourse entry not found' });
+                    return res.status(404).json({ error: 'StudentCourse entry not found' });
                 }
-
-                // Μπορείς να κάνεις log πριν το response
-                const msg = 'Reply status updated successfully';
-                console.log(msg);
-                res.status(200).json({ message: msg });
-
+                res.status(200).json({ message: 'Reply status updated successfully' });
             } catch (error) {
                 console.error('Error updating reply status:', error);
                 res.status(500).json({ error: 'Failed to update reply status.' });
             }
-        } else {
-            try {
-                const courseIds = data.courseIds;
-                const courseData = await Course.findAll({
-                    where: { id: courseIds },
-                    attributes: ['id', 'title', 'period']
-                });
-
-                return res.status(200).json(courseData);
-                } catch (err) {
-                console.error('FETCH_COURSES_BY_ID failed:', err.message);
-                return res.status(500).json({ error: 'Failed to fetch courses' });
-                }
         }
     } catch (err) {
         console.error('📛 Course event error:', err);

@@ -24,7 +24,7 @@ const ReviewRequest = sequelize.define('ReviewRequest', {
     allowNull: true
   },
   status: {
-    type: DataTypes.ENUM('pending', 'accepted', 'rejected'),
+    type: DataTypes.ENUM('pending', 'accept', 'reject'),
     allowNull: false,
     defaultValue: 'pending'
   }
