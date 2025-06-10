@@ -8,7 +8,7 @@ const events = require('../controllers/events');
 router.post('/events', events.handleEvent);
 router.post('/register', auth.register);
 router.post('/login', auth.login);
-router.get('/getUsersByIds/:ids', auth.getUsersByIds);
-router.get('/getUsers/', auth.getUsers);
+//router.get('/getUsersByIds/:ids', auth.getUsersByIds);
+//router.get('/getUsers/', auth.getUsers);
 
 module.exports = router;
