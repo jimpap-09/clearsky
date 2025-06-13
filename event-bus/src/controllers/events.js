@@ -4,40 +4,14 @@ const Event = require('../models/Event');
 // Define dispatch logic per event type
 const EVENT_DISPATCH_MAP = {
     INITIAL_GRADES: [
-        {
-            name: 'Analytics Service',
-            url: 'http://analytics-service:4002/events', 
-        },
-        {
-            name: 'Course Service',
-            url: 'http://course-service:4004/events', 
-        },
-        {
-            name: 'User Service',
-            url: 'http://user-mgmt-service:5000/events', 
-        },
-        {
-            name: 'Review Request Service',
-            url: 'http://review-request-service:4003/events',
-        },
+        { name: 'Analytics Service', url: 'http://analytics-service:4002/events' },
+        { name: 'Course Service', url: 'http://course-service:4004/events' },
+        { name: 'User Service', url: 'http://user-mgmt-service:5000/events' },
     ],
     FINAL_GRADES: [
-        {
-            name: 'Analytics Service',
-            url: 'http://analytics-service:4002/events', 
-        },
-        {
-            name: 'Course Service',
-            url: 'http://course-service:4004/events', 
-        },
-        {
-            name: 'User Service',
-            url: 'http://user-mgmt-service:5000/events',
-        },
-        {
-            name: 'Review Request Service',
-            url: 'http://review-request-service:4003/events',
-        },
+        { name: 'Analytics Service', url: 'http://analytics-service:4002/events' },
+        { name: 'Course Service', url: 'http://course-service:4004/events' },
+        { name: 'User Service', url: 'http://user-mgmt-service:5000/events' },
     ],
     REVIEW_REQUEST: [
         {
