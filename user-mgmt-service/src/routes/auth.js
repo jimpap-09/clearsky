@@ -10,5 +10,6 @@ router.post('/register', auth.register);
 router.post('/login', auth.login);
 router.get('/getUsersByIds/:ids', auth.getUsersByIds);
 router.get('/getUsers/', auth.getUsers);
+router.put('/change-password', auth.changePassword);
 
 module.exports = router;

@@ -25,3 +25,4 @@ export const get_instructor_pending_review_request_url = 'http://localhost:4003/
 export const post_register_url = 'http://localhost:5000/register'
 export const get_login_url = 'http://localhost:5000/login'
 export const get_users_by_ids_url = 'http://localhost:5000/getUsersByIds'
+export const put_change_password_url = 'http://localhost:5000//change-password'
