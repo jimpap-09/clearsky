@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { post_register_url } from '../apiConfig';
-import MessageArea from '../components/ui/MessageArea';
 import axios from 'axios'
 
 export default function SignUp() {

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import MessageArea from '../components/ui/MessageArea';
+import { put_change_password_url } from '../apiConfig';
 import UserDropDown from '../components/ui/UserDropDown';
 
 export default function UserManagement() {
-    const options = ['instructor', 'student', 'representative'];
+    const options = ['instructor', 'student', 'representative']
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [id, setId] = useState('');
@@ -13,8 +13,21 @@ export default function UserManagement() {
         if(action !== 'student') setId('');
     },[action]);
 
+    const handleChangePassword = async () => {
+        try {
+            const response = await axios.put(`${put_change_password_url}`,
+                { id, newPassword: password });
+            const data = response.json();
+            alert('Password updated successfully');
+            console.log(data);
+        } catch (err) {
+            console.error('Error changing password:', err);
+            alert('Something went wrong');
+        }
+    };
+    
     return (
-        <>
+    <div className='usermanagement-container'>
         <div className="main-container">
             <h2 className='main-container-header'>Users</h2>
             <form className='main-form'>
@@ -54,19 +67,22 @@ export default function UserManagement() {
                 </div>
                 <div className='usermngmnt-btn-container'>
                     <div className='submit-btn'>
-                        <button className='main-button' type="submit">
+                        <button 
+                        className='main-button'
+                        type="submit">
                             Add user
                         </button>
                     </div>
                     <div className='submit-btn'>
-                        <button className='main-button' type="button">
+                        <button 
+                        className='main-button'
+                        onClick={handleChangePassword()}
+                        type="button">
                             Change password
                         </button>
                     </div>
                 </div>
             </form>
         </div>
-        <MessageArea/>
-        </>
-    )
-}
+    </div>
+)}

@@ -4,7 +4,6 @@ import useAuth from "../context/AuthContext";
 import { get_login_url } from '../apiConfig';
 import axios from 'axios'
 import { buildPath } from '../utils/routes';
-import MessageArea from '../components/ui/MessageArea';
 
 // login - main page
 export default function Login() {

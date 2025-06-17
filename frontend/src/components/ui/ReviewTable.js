@@ -18,7 +18,7 @@ export default function ReviewTable({id, token, selectedReview, onSelect, setVie
 
   if(!reviews || reviews.length === 0) return (
     <h2>
-      No Pending Reviews!
+      You don't have any pending Grade Review Requests!
     </h2>
   );
 

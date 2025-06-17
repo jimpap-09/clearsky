@@ -78,3 +78,29 @@ exports.getUsersByIds = async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch user' });
     }
 }
+
+exports.changePassword = async (req, res) => {
+    const { id, newPassword } = req.body;
+
+    if (!id || !newPassword) {
+        return res.status(400).json({ error: 'Missing id or new password' });
+    }
+
+    try {
+        const user = await User.findByPk(id);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const passwordHash = await bcrypt.hash(newPassword, 10);
+        user.passwordHash = passwordHash;
+
+        await user.save();
+
+        return res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        console.error('Password change error:', error);
+        return res.status(500).json({ error: 'Something went wrong' });
+    }
+};

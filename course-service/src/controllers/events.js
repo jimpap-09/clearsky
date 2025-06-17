@@ -42,6 +42,11 @@ exports.handleEvent = async (req, res) => {
                     period: examPeriod,
                     status: (type === 'FINAL_GRADES') ? 'closed' : 'open'
                 });
+            } else {
+                if(course.status == 'open' && type === 'FINAL_GRADES') {
+                    course.status = 'closed';
+                    await course.save();
+                }
             }
 
             // Extract student IDs from the first column (skip header row)

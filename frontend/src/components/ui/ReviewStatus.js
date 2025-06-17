@@ -49,15 +49,17 @@ export default function ReviewStatus({studentId, course, onBack}) {
                 <input
                     className='main-input'
                     type='text'
-                    value={request}
+                    value={request ? request : 'No reply from the instructor yet.'}
                     readOnly
                     style={{
                         borderRadius: '8px',
                         padding: '10px',
                         fontFamily: 'Arial',
                         width: '100%',
-                        height: '100px',  // μεγαλώνεις το ύψος για να φαίνεται πιο ορθογώνιο
-                        boxSizing: 'border-box' // ώστε το padding να μετράει μέσα στο width
+                        height: '100px',
+                        boxSizing: 'border-box',
+                        color: request ? 'black' : 'gray',
+                        fontStyle: request ? 'normal' : 'italic',
                     }}
                 />
                 {/* <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '10px'}}>
@@ -76,7 +78,15 @@ export default function ReviewStatus({studentId, course, onBack}) {
                     >
                         Ack
                     </button>
-                </div> */}
+                </div> */
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+                    <button
+                        className='main-button'
+                        onClick={onBack}
+                    >
+                    Back
+                    </button>
+                </div>}
             </div>
         </div>
     </div>
