@@ -1,0 +1,32 @@
+@startuml
++class Grades {
+	- studentId
+	- courseId
+	- examPeriod
+	- courseName
+	- perQuestion
+	- isFinalized
+}
++class User {
+	- id
+	- name
+	- email
+	- passwordHash
+	- role
+}
++class Course {
+	- id
+	- instructorId
+	- title
+	- period
+	- gradingStatus
+}
++class ReviewRequest {
+	- courseId
+	- studentId
+	- instructorId
+	- studentMessage
+	- professorReply
+	- status
+}
+@enduml

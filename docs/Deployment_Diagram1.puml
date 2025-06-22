@@ -1,0 +1,138 @@
+@startuml
+allowmixing
+node "Client " as Client_ {
+	node Browser {
+	}
+}
+node "Postgres Docker Container" as Postgres_Docker_Container {
+	component "Review Request Database" as Review_Request_Database {
+	}
+	artifact "PostgreSQL " as PostgreSQL_
+	port "5433" as port_zn4r2umD_AACARgk
+}
+node "Postgres Docker Container" as Postgres_Docker_Container {
+	component "Course Database" as Course_Database {
+	}
+	artifact "PostgreSQL " as PostgreSQL_
+	port "5433" as port_hTjr2umD_AACARjw
+}
+node "Postgres Docker Container" as Postgres_Docker_Container {
+	component "Review Request Database" as Review_Request_Database {
+	}
+	artifact "PostgreSQL " as PostgreSQL_
+	port "5433" as port_Z_Gr2umD_AACARhz
+}
+node "Postgres Docker Container" as Postgres_Docker_Container {
+	component "Analytics Database" as Analytics_Database {
+	}
+	artifact "PostgreSQL " as PostgreSQL_
+	port "5433" as port_0CLz2umD_AACARcA
+}
+node "Postgres Docker Container" as Postgres_Docker_Container {
+	component "User Database" as User_Database {
+	}
+	artifact "PostgreSQL " as PostgreSQL_
+	port "5433" as port_JxJz2umD_AACARas
+}
+node "Docker Event Bus Container" as Docker_Event_Bus_Container {
+	component controllers {
+	}
+	component models {
+	}
+	component routes {
+	}
+	artifact "Node.js" as Node_js
+	port "4005" as port_o_ML2umD_AACARde
+}
+node "Docker Frontend Container" as Docker_Frontend_Container {
+	component controllers {
+	}
+	component models {
+	}
+	component routes {
+	}
+	artifact "Node.js" as Node_js
+	port "3000" as port_5dDTcmmD_AACAXzY
+	port "3000" as port_7y8_2umD_AACARmk
+}
+node "Docker Course Service Container" as Docker_Course_Service_Container {
+	component controllers {
+	}
+	component models {
+	}
+	component routes {
+	}
+	artifact "Node.js" as Node_js
+	port "4004" as port_s1Dr2umD_AACARjj
+	port "4004" as port_Q0M_2umD_AACARmZ
+}
+node "Docker Review Request Service Container" as Docker_Review_Request_Service_Container {
+	component controllers {
+	}
+	component models {
+	}
+	component routes {
+	}
+	artifact "Node.js" as Node_js
+	port "4003" as port_p46r2umD_AACARho
+	port "4003" as port_1Q0_2umD_AACARmO
+}
+node "Docker Post Grades Service Container" as Docker_Post_Grades_Service_Container {
+	component controllers {
+	}
+	component models {
+	}
+	component routes {
+	}
+	artifact "Node.js" as Node_js
+	port "4001" as port_xnTL2umD_AACARfz
+	port "4001" as port_2JE_2umD_AACARmD
+}
+node "Docker Analytics Service Container" as Docker_Analytics_Service_Container {
+	component controllers {
+	}
+	component models {
+	}
+	component routes {
+	}
+	artifact "Node.js" as Node_js
+	port "4002" as port_YBTz2umD_AACARb1
+	port "4002" as port_Jw4_2umD_AACARl4
+}
+node "Docker User Service Container" as Docker_User_Service_Container {
+	component controllers {
+	}
+	component models {
+	}
+	component routes {
+	}
+	artifact "Node.js" as Node_js
+	port "5000" as port_Q8qj2umD_AACARaL
+	port "5000" as port_nEY_2umD_AACARlt
+}
+() "/localhost:3000" as _localhost_3000
+artifact "Express.js" as Express_js
+artifact "Express.js" as Express_js
+artifact "Express.js" as Express_js
+artifact "Express.js" as Express_js
+artifact "Express.js" as Express_js
+artifact "Express.js" as Express_js
+artifact "Express.js" as Express_js
+_localhost_3000 <|.. port_5dDTcmmD_AACAXzY
+Browser -- _localhost_3000
+port_JxJz2umD_AACARas -- port_Q8qj2umD_AACARaL
+port_YBTz2umD_AACARb1 -- port_0CLz2umD_AACARcA
+port_o_ML2umD_AACARde -- port_Q8qj2umD_AACARaL
+port_YBTz2umD_AACARb1 -- port_o_ML2umD_AACARde
+port_xnTL2umD_AACARfz -- port_o_ML2umD_AACARde
+port_zn4r2umD_AACARgk -- port_o_ML2umD_AACARde
+port_p46r2umD_AACARho -- port_Z_Gr2umD_AACARhz
+port_p46r2umD_AACARho -- port_o_ML2umD_AACARde
+port_s1Dr2umD_AACARjj -- port_hTjr2umD_AACARjw
+port_s1Dr2umD_AACARjj -- port_o_ML2umD_AACARde
+port_7y8_2umD_AACARmk -- port_2JE_2umD_AACARmD
+port_7y8_2umD_AACARmk -- port_Jw4_2umD_AACARl4
+port_7y8_2umD_AACARmk -- port_1Q0_2umD_AACARmO
+port_7y8_2umD_AACARmk -- port_Q0M_2umD_AACARmZ
+port_7y8_2umD_AACARmk -- port_nEY_2umD_AACARlt
+@enduml

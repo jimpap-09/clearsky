@@ -1,0 +1,139 @@
+@startuml
+allowmixing
+component Frontend {
+	port " " as port_UB0jUmmD_AACAXrt
+}
+package "Event Bus" {
+component "Event Bus" as Event_Bus {
+	port " " as port_ul67UmmD_AACAaUC
+}
+interface "IEvent Bus" as IEvent_Bus {
+	+receiveEvent()
+}
+Event_Bus ..|> IEvent_Bus : implements
+}
+package "Course Service" {
+component "Course Service" as Course_Service {
+	port " " as port_FugzUmmD_AACAY5y
+	port " " as port_pNp7UmmD_AACAaW_
+}
+interface "ICourse Service" as ICourse_Service {
+	+handleEvent()
+	+getCoursesByInstructor()
+	+getCoursesByStudent()
+	+getAllCourses()
+}
+Course_Service ..|> ICourse_Service : implements
+}
+package "Analytics Service" {
+component "Analytics Service" as Analytics_Service {
+	port " " as port_G_7DUmmD_AACAWlN
+	port " " as port_NjV7UmmD_AACAaXv
+}
+interface "IAnalytics Service" as IAnalytics_Service {
+	+handleEvent()
+	+getStudentGrades()
+	+getQuestionDistribution()
+	+getTotalGradeDistribution()
+}
+Analytics_Service ..|> IAnalytics_Service : implements
+}
+package "Review Request Service" {
+component "Review Request Service" as Review_Request_Service {
+	port " " as port_pRTLUmmD_AACAZBk
+	port " " as port_CAB7UmmD_AACAaWQ
+}
+interface "IReview Request Service" as IReview_Request_Service {
+	+createReviewRequest()
+	+respondToReviewRequest()
+	+getAllReviewRequests()
+	+getStudentReviewRequest()
+	+getInstructorPendingReviews()
+	+handleEvent()()
+}
+Review_Request_Service ..|> IReview_Request_Service : implements
+}
+package "Post Grades Service" {
+component "Post Grades Service" as Post_Grades_Service {
+	port " " as port_fYDDUmmD_AACAWk1
+	port " " as port_qEr7UmmD_AACAaZg
+}
+interface "IPost Grades Service" as IPost_Grades_Service {
+	+uploadInitial()
+	+uploadFinal()
+	+validateAndPost()
+}
+Post_Grades_Service ..|> IPost_Grades_Service : implements
+}
+package "User Service" {
+component "User Service" as User_Service {
+	port " " as port_xSj9UmmD_AACAVfo
+	port " " as port_Gft7UmmD_AACAaYV
+}
+interface "IUser Service" as IUser_Service {
+	+register()
+	+login()
+	+handleEvent()
+}
+User_Service ..|> IUser_Service : implements
+}
+() "/getAllCourses" as _getAllCourses
+ ' You might need to name this interface 
+()  " "  as NCOt2umD_AACARPA
+() "/getPendingReviewRequestsByInstructor/:instructorId" as _getPendingReviewRequestsByInstructor__instructorId
+() "/events" as _events
+() "Dispatch To Subscribers" as Dispatch_To_Subscribers
+() "/login" as _login
+() "/register" as _register
+() "getReviewRequest/:courseId/:studentId" as getReviewRequest__courseId__studentId
+() "/getAllReviewRequests" as _getAllReviewRequests
+() "/replyToReviewRequest/:courseId/:studentId" as _replyToReviewRequest__courseId__studentId
+() "/createReviewRequest" as _createReviewRequest
+() "/validateAndPost" as _validateAndPost
+() "/uploadFinalGrades" as _uploadFinalGrades
+() "/getInstructorCourses/:instructorId" as _getInstructorCourses__instructorId
+() "/getStudentCourses/:studentId" as _getStudentCourses__studentId
+() "/uploadInitialGrades" as _uploadInitialGrades
+() "/questionDistribution/:courseId" as _questionDistribution__courseId
+() "/totalGradeDistribution/:courseId" as _totalGradeDistribution__courseId
+() "/studentGrades/:studentId/:courseId" as _studentGrades__studentId__courseId
+_studentGrades__studentId__courseId <|.. port_G_7DUmmD_AACAWlN
+_studentGrades__studentId__courseId -- port_UB0jUmmD_AACAXrt : GET Student Grades
+_totalGradeDistribution__courseId <|.. port_G_7DUmmD_AACAWlN
+_totalGradeDistribution__courseId -- port_UB0jUmmD_AACAXrt : GET Total Grade Distribution
+_questionDistribution__courseId <|.. port_G_7DUmmD_AACAWlN
+_questionDistribution__courseId -- port_UB0jUmmD_AACAXrt : GET Distribution per Question
+_uploadInitialGrades <|.. port_fYDDUmmD_AACAWk1
+_uploadInitialGrades -- port_UB0jUmmD_AACAXrt : POST Upload Initial xlslx
+_getStudentCourses__studentId <|.. port_FugzUmmD_AACAY5y
+_getStudentCourses__studentId -- port_UB0jUmmD_AACAXrt : GET Student Courses
+_getInstructorCourses__instructorId <|.. port_FugzUmmD_AACAY5y
+_getInstructorCourses__instructorId -- port_UB0jUmmD_AACAXrt : GET Instructor Courses
+_uploadFinalGrades <|.. port_fYDDUmmD_AACAWk1
+_uploadFinalGrades -- port_UB0jUmmD_AACAXrt : POST Upload Final xlsx 
+_validateAndPost <|.. port_fYDDUmmD_AACAWk1
+_validateAndPost -- port_UB0jUmmD_AACAXrt : POST Validate Metadata and Post
+_createReviewRequest <|.. port_pRTLUmmD_AACAZBk
+_createReviewRequest -- port_UB0jUmmD_AACAXrt : Post Review Request
+_replyToReviewRequest__courseId__studentId <|.. port_pRTLUmmD_AACAZBk
+_replyToReviewRequest__courseId__studentId -- port_UB0jUmmD_AACAXrt : PUT Reply to a Request
+_getAllReviewRequests <|.. port_pRTLUmmD_AACAZBk
+_getAllReviewRequests -- port_UB0jUmmD_AACAXrt : GET All Reviw Requests
+getReviewRequest__courseId__studentId <|.. port_pRTLUmmD_AACAZBk
+getReviewRequest__courseId__studentId -- port_UB0jUmmD_AACAXrt : GET Review Request
+_register <|.. port_xSj9UmmD_AACAVfo
+_register -- port_UB0jUmmD_AACAXrt
+_login <|.. port_xSj9UmmD_AACAVfo
+_login -- port_UB0jUmmD_AACAXrt
+Dispatch_To_Subscribers <|.. port_ul67UmmD_AACAaUC
+port_pNp7UmmD_AACAaW_ -- Dispatch_To_Subscribers
+port_NjV7UmmD_AACAaXv -- Dispatch_To_Subscribers
+port_Gft7UmmD_AACAaYV -- Dispatch_To_Subscribers
+_events <|.. port_qEr7UmmD_AACAaZg
+port_ul67UmmD_AACAaUC -- _events
+_getPendingReviewRequestsByInstructor__instructorId <|.. port_pRTLUmmD_AACAZBk
+port_CAB7UmmD_AACAaWQ ..> Dispatch_To_Subscribers : <<use>>  
+port_UB0jUmmD_AACAXrt ..> _getPendingReviewRequestsByInstructor__instructorId : <<use>>  GET Instructor Rev Reqs
+_getAllCourses <|.. port_FugzUmmD_AACAY5y
+port_UB0jUmmD_AACAXrt ..> _getAllCourses : <<use>>  GET All Courses
+@enduml
