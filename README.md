@@ -62,5 +62,6 @@ el75501@mail.ntua.gr
 
 pass
 
-i want at least 5
-Ok u get 5
+i want at least 9
+Ok u get 10
+Νο you get 8

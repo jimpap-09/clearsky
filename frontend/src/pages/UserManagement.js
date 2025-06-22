@@ -1,23 +1,41 @@
-import { useEffect, useState } from 'react';
-import { put_change_password_url } from '../apiConfig';
-import UserDropDown from '../components/ui/UserDropDown';
+import { useState } from 'react';
+import { put_change_password_url, post_register_url } from '../apiConfig';
+import axios from 'axios';
 
 export default function UserManagement() {
-    const options = ['instructor', 'student', 'representative']
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [id, setId] = useState('');
-    const [action, setAction] = useState('');
+    const [role, setRole] = useState('STUDENT');
 
-    useEffect(()=>{
-        if(action !== 'student') setId('');
-    },[action]);
+    const handleAddUser = async () => {
+        try {
+            const email = `${username}@clearsky.local`;
+            const response = await axios.post(`${post_register_url}`, {
+                id,
+                name: username,
+                email,
+                role,
+                password
+            });
+            const data = response.data;
+            alert('User has been added successfully');
+            console.log(data);
+        } catch (err) {
+            console.error('Error adding the user:', err);
+            alert('Something went wrong');
+        }
+    };
+
 
     const handleChangePassword = async () => {
         try {
-            const response = await axios.put(`${put_change_password_url}`,
-                { id, newPassword: password });
-            const data = response.json();
+            const response = await axios.put(`${put_change_password_url}`, {
+                id,
+                newPassword: password,
+                username
+            });
+            const data = response.data;
             alert('Password updated successfully');
             console.log(data);
         } catch (err) {
@@ -33,7 +51,14 @@ export default function UserManagement() {
             <form className='main-form'>
                 <div className="label-container">
                     <label className='main-label'>type:</label>
-                    <UserDropDown options={options} start={'institution representative'} setAction={setAction}/>
+                    <select
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    style={{padding: '10px', borderRadius: '10px', cursor: 'pointer'}}
+                    >
+                        <option value="STUDENT">Student</option>
+                        <option value="INSTRUCTOR">Instructor</option>
+                    </select>
                 </div>
                 <div className="label-container">
                     <label className='main-label'>Username:</label>
@@ -62,21 +87,21 @@ export default function UserManagement() {
                         type="text"
                         value={id}
                         onChange={(e) => setId(e.target.value)}
-                        disabled={action !== 'student'}
                     />
                 </div>
                 <div className='usermngmnt-btn-container'>
                     <div className='submit-btn'>
                         <button 
                         className='main-button'
-                        type="submit">
+                        onClick={handleAddUser}
+                        type="button">
                             Add user
                         </button>
                     </div>
                     <div className='submit-btn'>
                         <button 
                         className='main-button'
-                        onClick={handleChangePassword()}
+                        onClick={handleChangePassword}
                         type="button">
                             Change password
                         </button>

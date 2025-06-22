@@ -5,7 +5,8 @@ const User = require('../models/User');
 
 exports.register = async (req, res) => {
     const { id, email, password, role, name } = req.body;
-    
+    console.log("REGISTER REQUEST:", req.body); // 👈 Βλέπεις τι έφτασε πραγματικά
+
     try {
         // Hash password
         const hash = await bcrypt.hash(password, 10);
@@ -24,10 +25,9 @@ exports.register = async (req, res) => {
 
         res.status(201).json({ message: 'User created', user: { id: user.id, email, role, name } });
     } catch (err) {
-        console.error(err);
-        res.status(400).json({ error: 'Registration failed' });
-    }
-};
+        console.error('Registration error:', err.message || err);
+        res.status(500).json({ error: err.message || 'Registration failed' });
+    }};
 
 exports.login = async (req, res) => {
     const { email, password } = req.body;
@@ -80,14 +80,19 @@ exports.getUsersByIds = async (req, res) => {
 }
 
 exports.changePassword = async (req, res) => {
-    const { id, newPassword } = req.body;
+    const { id, newPassword, username } = req.body;
 
-    if (!id || !newPassword) {
-        return res.status(400).json({ error: 'Missing id or new password' });
+    if (!id || !newPassword || !username) {
+        return res.status(400).json({ error: 'Missing id, username or password' });
     }
 
     try {
-        const user = await User.findByPk(id);
+        const user = await User.findOne({
+            where: {
+                id: id,
+                name: username
+            }
+        });
 
         if (!user) {
             return res.status(404).json({ error: 'User not found' });

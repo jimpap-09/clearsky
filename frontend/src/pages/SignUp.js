@@ -103,7 +103,7 @@ export default function SignUp() {
                             <label className='main-label'>Password:</label>
                             <input
                                 className='main-input'
-                                type="password"
+                                type="current-password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
