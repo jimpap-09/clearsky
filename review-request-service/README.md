@@ -13,7 +13,7 @@ body πχ:
 }
 ```
 
-PUT Request  
+PUT Request
 **localhost:4003/replyToReviewRequest/:courseId/:studentId**  
 body πχ:  
 ```
